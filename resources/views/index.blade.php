@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>test</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    function toggleClockElements() {
+      const clockElements = document.getElementById('clock-elements');
+      clockElements.classList.toggle('hidden');
+    }
+  </script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <style>
+    .sidebar-custom {
+      border-top-left-radius: 40px;
+      border-bottom-left-radius: 40px;
+      border-top-right-radius: 40px;
+      border-bottom-right-radius: 40px;
+    }
+  </style>
+</head>
+
+<body class="bg-[#E0E6E9]">
+
+  <div class="flex">
+    <!-- Sidebar -->
+    <aside class="w-48 bg-white p-4 flex flex-col sidebar-custom ml-4 mt-4 mb-4">
+      <div class="flex flex-col items-center justify-center mb-8">
+        <!-- Logo -->
+        <div class="text-2xl font-bold"><img src="{{ asset('images/logo.png') }}" alt="Logo" class="h-auto"></div>
+      </div>
+
+      <!-- Menu Items -->
+      <nav class="space-y-4">
+        <a href="#" class="flex items-center space-x-2 p-3 hover:bg-black hover:text-white rounded-lg">
+          <span class="material-icons">dashboard</span>
+          <span>Dashboard</span>
+        </a>
+        <a href="#" class="flex items-center space-x-2 p-3 hover:bg-black hover:text-white rounded-lg">
+          <span class="material-icons">list</span>
+          <span>Services</span>
+        </a>
+        <a href="#" class="flex items-center space-x-2 p-3 hover:bg-black hover:text-white rounded-lg">
+          <span class="material-icons">history</span>
+          <span>History</span>
+        </a>
+        <a href="#" class="flex items-center space-x-2 p-3 hover:bg-black hover:text-white rounded-lg">
+          <span class="material-icons">feedback</span>
+          <span>Feedback</span>
+        </a>
+        <a href="#" class="flex items-center space-x-2 p-3 hover:bg-black hover:text-white rounded-lg">
+          <span class="material-icons">directions_car</span>
+          <span>Cars</span>
+        </a>
+        <a href="#" class="flex items-center space-x-2 p-3 hover:bg-black hover:text-white rounded-lg">
+          <span class="material-icons">place</span>
+          <span>Address</span>
+        </a>
+        <a href="#" class="flex items-center space-x-2 p-3 hover:bg-black hover:text-white rounded-lg">
+          <span class="material-icons">article</span>
+          <span>Quotes</span>
+        </a>
+        <a href="#" class="flex items-center space-x-2 p-3 hover:bg-black hover:text-white rounded-lg">
+          <span class="material-icons">settings</span>
+          <span>Settings</span>
+        </a>
+      </nav>
+
+      <!-- User Profile -->
+      <div class="mt-auto flex items-center space-x-4">
+        <img src="https://via.placeholder.com/40" class="rounded-full" alt="Profile Picture">
+        <div>
+          <p class="text-sm font-semibold">Shani</p>
+          <p class="text-xs text-gray-500">Online</p>
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-6">
+      <!-- Top Bar -->
+      <div class="flex justify-between items-center mb-8">
+        <!-- Search Bar -->
+        <div class="relative w-1/4">
+          <input type="text" placeholder="Type searching..."
+            class="w-full p-3 pl-10 rounded-full bg-white border border-gray-300">
+          <span class="absolute left-3 top-1/2 transform -translate-y-1/2 material-icons text-gray-400">search</span>
+        </div>
+
+        <!-- Utility Icons -->
+        <div class="flex items-center space-x-4">
+
+          <div class="relative">
+            <span class="material-icons bg-black text-white p-2 rounded-full">notifications</span>
+            <span
+              class="absolute top-0 right-0 bg-red-500 text-white rounded-full text-xs w-4 h-4 flex items-center justify-center">0</span>
+          </div>
+          <div>
+            <span class="material-icons bg-gray-200 p-2 rounded-full">mail</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Section -->
+      <div class="text-center text-gray-600">
+        <!-- Add your main content here -->
+
+        <div class="border border-gray-200 shadow-lg rounded-xl p-8 bg-white max-w-lg mx-auto">
+          <h1 class="text-3xl font-semibold mb-8 text-gray-800">Daily Attendance</h1>
+
+          <!-- Clock In Button -->
+          <button type="button"
+            class="text-white bg-green-600 hover:bg-green-500 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-base px-6 py-3 mb-4  transition duration-300 ease-in-out">
+            Clock In
+          </button>
+
+          <!-- Clock Out Button -->
+          <button type="button"
+            class="text-white bg-red-600 hover:bg-red-500 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-base px-6 py-3 mb-4  transition duration-300 ease-in-out">
+            Clock Out
+          </button>
+
+          <!-- Meeting Button -->
+          <button type="button"
+            class="text-white bg-gray-800 hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-500 font-medium rounded-lg text-base px-6 py-3 transition duration-300 ease-in-out"
+            onclick="toggleClockElements()">
+            Meeting
+          </button>
+
+          <!-- Hidden Clock-In, Clock-Out, and Submit Elements -->
+          <div id="clock-elements" class="hidden space-y-4 mt-6">
+
+            <!-- Clock In Button Inside -->
+            <button
+              class="text-white bg-blue-600 hover:bg-blue-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-base px-6 py-3  transition duration-300 ease-in-out">
+              Clock In
+            </button>
+
+            <!-- Clock Out Button Inside -->
+            <button
+              class="text-white bg-red-600 hover:bg-red-500 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-base px-6 py-3  transition duration-300 ease-in-out">
+              Clock Out
+            </button>
+
+            <!-- Text Box with Submit Button -->
+            <div>
+              <input type="text" placeholder="Enter details"
+                class="w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 transition duration-300 ease-in-out" />
+              <button
+                class="text-white bg-green-600 hover:bg-green-500 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-base px-6 py-3 mt-4  transition duration-300 ease-in-out">
+                Submit
+              </button>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="mt-6 border border-gray-200 shadow-lg rounded-xl p-8 bg-white max-w-lg mx-auto">
+          <h1 class="text-3xl font-semibold mb-8 text-gray-800">
+            Weekend Attendance
+          </h1>
+
+          <div class="space-y-6">
+
+            <!-- Clock In Button -->
+            <button type="button"
+              class="text-white bg-green-600 hover:bg-green-500 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-base px-6 py-3  transition duration-300 ease-in-out">
+              Clock In
+            </button>
+
+            <!-- Clock Out Button -->
+            <button type="button"
+              class="text-white bg-red-600 hover:bg-red-500 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-base px-6 py-3  transition duration-300 ease-in-out">
+              Clock Out
+            </button>
+
+            <!-- Description Input Section -->
+            <div>
+              <input type="text" placeholder="Enter details"
+                class="w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 transition duration-300 ease-in-out" />
+              <button
+                class="text-white bg-blue-600 hover:bg-blue-500 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-base px-6 py-3 mt-4  transition duration-300 ease-in-out">
+                Submit
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+
+        <div class="mt-6 border border-gray-200 shadow-lg rounded-xl p-8 bg-white max-w-lg mx-auto">
+          <h1 class="text-3xl font-semibold mb-8 text-gray-800">
+            Work From Home
+          </h1>
+
+          <div class="space-y-6">
+
+            <!-- Clock In Button -->
+            <button type="button"
+              class="text-white bg-green-600 hover:bg-green-500 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-base px-6 py-3  transition duration-300 ease-in-out">
+              Clock In
+            </button>
+
+            <!-- Clock Out Button -->
+            <button type="button"
+              class="text-white bg-red-600 hover:bg-red-500 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-base px-6 py-3  transition duration-300 ease-in-out">
+              Clock Out
+            </button>
+
+            <!-- Request Button -->
+            <button type="button"
+              class="text-gray-900 bg-white border border-gray-800 hover:bg-gray-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-base px-6 py-3  transition duration-300 ease-in-out">
+              Request
+            </button>
+
+            <!-- Description Input Section -->
+            <div>
+              <input type="text" placeholder="Enter details"
+                class="w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 transition duration-300 ease-in-out" />
+              <button
+                class="text-white bg-blue-600 hover:bg-blue-500 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-base px-6 py-3 mt-4  transition duration-300 ease-in-out">
+                Submit
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+
+
+
+
+      </div>
+
+    </main>
+  </div>
+
+</body>
+
+</html>
