@@ -1,6 +1,5 @@
 <x-layout>
 
-
     <div class="text-center text-gray-600">
         <!-- Add your main content here -->
 
@@ -128,4 +127,4 @@
     </div>
 
 
-</x-layout>
+    </x-layout>
