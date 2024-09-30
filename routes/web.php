@@ -1,13 +1,17 @@
 <?php
 
+use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\LeavesController;
+use App\Http\Controllers\OvertimeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\WfhController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
+/* Route::get('/', function () {
     return view('dashboard');
-});
+}); */
 
-Route::get('/dashboard', function () {
+Route::get('/', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -16,5 +20,18 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::get('/attendance', [AttendanceController::class, 'index']);
+Route::post('/attendance/clockin', [AttendanceController::class, 'clockIn']);
+Route::post('/attendance/clockout', [AttendanceController::class, 'clockOut']);
+
+Route::post('/leave/request', [LeavesController::class, 'requestLeave']);
+Route::get('/leave/status', [LeavesController::class, 'leaveStatus']);
+
+Route::post('/wfh/request', [WfhController::class, 'requestWFH']);
+Route::get('/wfh/status', [WfhController::class, 'statusWFH']);
+
+Route::post('/overtime/log', [OvertimeController::class, 'logOvertime']);
+
 
 require __DIR__.'/auth.php';

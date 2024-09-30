@@ -1,4 +1,4 @@
-<x-layout>
+<x-app-layout>
 
 
     <div class="text-center text-gray-600">
@@ -128,4 +128,4 @@
     </div>
 
 
-</x-layout>
+</x-app-layout>
