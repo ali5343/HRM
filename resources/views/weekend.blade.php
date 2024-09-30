@@ -1,5 +1,6 @@
 <x-layout>
 
+
     <div class="text-center text-gray-600">
         <!-- Add your main content here -->
 
@@ -8,7 +9,7 @@
 
         <div class="mt-6 border border-gray-200 shadow-lg rounded-xl p-8 bg-white max-w-lg mx-auto">
             <h1 class="text-3xl font-semibold mb-8 text-gray-800">
-                Work From Home
+                Weekend Attendance
             </h1>
 
             <div class="space-y-6">
@@ -25,12 +26,6 @@
                     Clock Out
                 </button>
 
-                <!-- Request Button -->
-                <button type="button"
-                    class="text-gray-900 bg-white border border-gray-800 hover:bg-gray-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-base px-6 py-3  transition duration-300 ease-in-out">
-                    Request
-                </button>
-
                 <!-- Description Input Section -->
                 <div>
                     <input type="text" placeholder="Enter details"
@@ -44,7 +39,10 @@
             </div>
         </div>
 
+
+        
+
     </div>
 
 
-    </x-layout>
+</x-layout>

@@ -33,5 +33,17 @@ Route::get('/wfh/status', [WfhController::class, 'statusWFH']);
 
 Route::post('/overtime/log', [OvertimeController::class, 'logOvertime']);
 
+Route::get('/daily', function () {
+    return view('daily');
+});
+Route::get('/weekend', function () {
+    return view('weekend');
+});
+Route::get('/home', function () {
+    return view('home');
+});
+Route::get('/leaves', function () {
+    return view('leaves');
+});
 
 require __DIR__.'/auth.php';
