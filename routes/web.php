@@ -21,6 +21,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+/* Route::resource('attendance', AttendanceController::class)->only(['index', 'store']); */
+
 Route::get('/attendance', [AttendanceController::class, 'index']);
 Route::post('/attendance/clockin', [AttendanceController::class, 'clockIn']);
 Route::post('/attendance/clockout', [AttendanceController::class, 'clockOut']);
@@ -36,6 +38,9 @@ Route::post('/overtime/log', [OvertimeController::class, 'logOvertime']);
 Route::get('/daily', function () {
     return view('daily');
 });
+
+Route::post('/daily', [AttendanceController::class, 'store'])->name('daily');
+
 Route::get('/weekend', function () {
     return view('weekend');
 });
