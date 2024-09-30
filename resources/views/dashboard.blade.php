@@ -52,5 +52,4 @@
     </div>
 </div>
 
-
 </x-layout>

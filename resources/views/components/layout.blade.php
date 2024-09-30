@@ -21,6 +21,8 @@
       border-bottom-right-radius: 40px;
     }
   </style>
+  <script></script>
+  @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body class="bg-[#E0E6E9]">
@@ -40,19 +42,19 @@
           <span>Dashboard</span>
         </a>
         <a href="/daily" class="flex items-center space-x-2 p-3 hover:bg-black hover:text-white rounded-lg">
-          <span class="material-icons">list</span>
+          <span class="material-icons">today</span>
           <span>Daily Attendance</span>
         </a>
         <a href="/weekend" class="flex items-center space-x-2 p-3 hover:bg-black hover:text-white rounded-lg">
-          <span class="material-icons">history</span>
+          <span class="material-icons">weekend</span>
           <span>Weekend Attandance</span>
         </a>
         <a href="/home" class="flex items-center space-x-2 p-3 hover:bg-black hover:text-white rounded-lg">
-          <span class="material-icons">feedback</span>
+          <span class="material-icons">home_filled</span>
           <span>Work from home</span>
         </a>
         <a href="/leaves" class="flex items-center space-x-2 p-3 hover:bg-black hover:text-white rounded-lg">
-          <span class="material-icons">feedback</span>
+          <span class="material-icons">sick</span>
           <span>Leaves</span>
         </a>
         
@@ -108,9 +110,11 @@
                         </form>
                     </x-slot>
                 </x-dropdown>
-          </div>
+        </div>
+        
 
       </div>
+      
 
       <!-- Main Section -->
 
