@@ -9,7 +9,7 @@
                 </div>
 
                 <!-- Menu Items -->
-                <nav class="space-y-4">
+                <nav  class="space-y-4">
                     <a href="#" class="flex items-center space-x-2 p-3 hover:bg-black hover:text-white rounded-lg">
                         <span class="material-icons">dashboard</span>
                         <span>Dashboard</span>
@@ -44,14 +44,7 @@
                     </a>
                 </nav>
 
-                <!-- User Profile -->
-                <div class="mt-auto flex items-center space-x-4">
-                    <img src="https://via.placeholder.com/40" class="rounded-full" alt="Profile Picture">
-                    <div>
-                        <p class="text-sm font-semibold">Shani</p>
-                        <p class="text-xs text-gray-500">Online</p>
-                    </div>
-                </div>
+               
 
             </aside>
 

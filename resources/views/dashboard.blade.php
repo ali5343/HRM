@@ -1,131 +1,55 @@
-<x-app-layout>
+<x-layout>
 
 
-    <div class="text-center text-gray-600">
-        <!-- Add your main content here -->
-
-        <div class="border border-gray-200 shadow-lg rounded-xl p-8 bg-white max-w-lg mx-auto">
-            <h1 class="text-3xl font-semibold mb-8 text-gray-800">Daily Attendance</h1>
-
-            <!-- Clock In Button -->
-            <button type="button"
-                class="text-white bg-green-600 hover:bg-green-500 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-base px-6 py-3 mb-4  transition duration-300 ease-in-out">
-                Clock In
-            </button>
-
-            <!-- Clock Out Button -->
-            <button type="button"
-                class="text-white bg-red-600 hover:bg-red-500 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-base px-6 py-3 mb-4  transition duration-300 ease-in-out">
-                Clock Out
-            </button>
-
-            <!-- Meeting Button -->
-            <button type="button"
-                class="text-white bg-gray-800 hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-500 font-medium rounded-lg text-base px-6 py-3 transition duration-300 ease-in-out"
-                onclick="toggleClockElements()">
-                Meeting
-            </button>
-
-            <!-- Hidden Clock-In, Clock-Out, and Submit Elements -->
-            <div id="clock-elements" class="hidden space-y-4 mt-6">
-
-                <!-- Clock In Button Inside -->
-                <button
-                    class="text-white bg-blue-600 hover:bg-blue-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-base px-6 py-3  transition duration-300 ease-in-out">
-                    Clock In
-                </button>
-
-                <!-- Clock Out Button Inside -->
-                <button
-                    class="text-white bg-red-600 hover:bg-red-500 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-base px-6 py-3  transition duration-300 ease-in-out">
-                    Clock Out
-                </button>
-
-                <!-- Text Box with Submit Button -->
-                <div>
-                    <input type="text" placeholder="Enter details"
-                        class="w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 transition duration-300 ease-in-out" />
-                    <button
-                        class="text-white bg-green-600 hover:bg-green-500 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-base px-6 py-3 mt-4  transition duration-300 ease-in-out">
-                        Submit
-                    </button>
-                </div>
-            </div>
+<div class="grid grid-cols-1 gap-4 px-4 mt-8 sm:grid-cols-4 sm:px-8">
+    <div class="flex items-center bg-white border rounded-sm overflow-hidden shadow">
+        <div class="p-4 bg-green-400"><svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-white" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z">
+                </path>
+            </svg></div>
+        <div class="px-4 text-gray-700">
+            <h3 class="text-sm tracking-wider">Total Member</h3>
+            <p class="text-3xl">12,768</p>
         </div>
-
-
-        <div class="mt-6 border border-gray-200 shadow-lg rounded-xl p-8 bg-white max-w-lg mx-auto">
-            <h1 class="text-3xl font-semibold mb-8 text-gray-800">
-                Weekend Attendance
-            </h1>
-
-            <div class="space-y-6">
-
-                <!-- Clock In Button -->
-                <button type="button"
-                    class="text-white bg-green-600 hover:bg-green-500 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-base px-6 py-3  transition duration-300 ease-in-out">
-                    Clock In
-                </button>
-
-                <!-- Clock Out Button -->
-                <button type="button"
-                    class="text-white bg-red-600 hover:bg-red-500 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-base px-6 py-3  transition duration-300 ease-in-out">
-                    Clock Out
-                </button>
-
-                <!-- Description Input Section -->
-                <div>
-                    <input type="text" placeholder="Enter details"
-                        class="w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 transition duration-300 ease-in-out" />
-                    <button
-                        class="text-white bg-blue-600 hover:bg-blue-500 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-base px-6 py-3 mt-4  transition duration-300 ease-in-out">
-                        Submit
-                    </button>
-                </div>
-
-            </div>
-        </div>
-
-
-        <div class="mt-6 border border-gray-200 shadow-lg rounded-xl p-8 bg-white max-w-lg mx-auto">
-            <h1 class="text-3xl font-semibold mb-8 text-gray-800">
-                Work From Home
-            </h1>
-
-            <div class="space-y-6">
-
-                <!-- Clock In Button -->
-                <button type="button"
-                    class="text-white bg-green-600 hover:bg-green-500 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-base px-6 py-3  transition duration-300 ease-in-out">
-                    Clock In
-                </button>
-
-                <!-- Clock Out Button -->
-                <button type="button"
-                    class="text-white bg-red-600 hover:bg-red-500 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-base px-6 py-3  transition duration-300 ease-in-out">
-                    Clock Out
-                </button>
-
-                <!-- Request Button -->
-                <button type="button"
-                    class="text-gray-900 bg-white border border-gray-800 hover:bg-gray-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-base px-6 py-3  transition duration-300 ease-in-out">
-                    Request
-                </button>
-
-                <!-- Description Input Section -->
-                <div>
-                    <input type="text" placeholder="Enter details"
-                        class="w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 transition duration-300 ease-in-out" />
-                    <button
-                        class="text-white bg-blue-600 hover:bg-blue-500 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-base px-6 py-3 mt-4  transition duration-300 ease-in-out">
-                        Submit
-                    </button>
-                </div>
-
-            </div>
-        </div>
-
     </div>
+    <div class="flex items-center bg-white border rounded-sm overflow-hidden shadow">
+        <div class="p-4 bg-blue-400"><svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-white" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2">
+                </path>
+            </svg></div>
+        <div class="px-4 text-gray-700">
+            <h3 class="text-sm tracking-wider">Total Post</h3>
+            <p class="text-3xl">39,265</p>
+        </div>
+    </div>
+    <div class="flex items-center bg-white border rounded-sm overflow-hidden shadow">
+        <div class="p-4 bg-indigo-400"><svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-white" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z">
+                </path>
+            </svg></div>
+        <div class="px-4 text-gray-700">
+            <h3 class="text-sm tracking-wider">Total Comment</h3>
+            <p class="text-3xl">142,334</p>
+        </div>
+    </div>
+    <div class="flex items-center bg-white border rounded-sm overflow-hidden shadow">
+        <div class="p-4 bg-red-400"><svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-white" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4">
+                </path>
+            </svg></div>
+        <div class="px-4 text-gray-700">
+            <h3 class="text-sm tracking-wider">Server Load</h3>
+            <p class="text-3xl">34.12%</p>
+        </div>
+    </div>
+</div>
 
-
-</x-app-layout>
+</x-layout>

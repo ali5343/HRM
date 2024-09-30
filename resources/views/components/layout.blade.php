@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>test</title>
+  <title>HRM</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     function toggleClockElements() {
@@ -21,6 +21,8 @@
       border-bottom-right-radius: 40px;
     }
   </style>
+  <script></script>
+  @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body class="bg-[#E0E6E9]">
@@ -35,47 +37,32 @@
 
       <!-- Menu Items -->
       <nav class="space-y-4">
-        <a href="#" class="flex items-center space-x-2 p-3 hover:bg-black hover:text-white rounded-lg">
+        <a href="/" class="flex items-center space-x-2 p-3 hover:bg-black hover:text-white rounded-lg">
           <span class="material-icons">dashboard</span>
           <span>Dashboard</span>
         </a>
-        <a href="#" class="flex items-center space-x-2 p-3 hover:bg-black hover:text-white rounded-lg">
-          <span class="material-icons">list</span>
-          <span>Services</span>
+        <a href="/daily" class="flex items-center space-x-2 p-3 hover:bg-black hover:text-white rounded-lg">
+          <span class="material-icons">today</span>
+          <span>Daily Attendance</span>
         </a>
-        <a href="#" class="flex items-center space-x-2 p-3 hover:bg-black hover:text-white rounded-lg">
-          <span class="material-icons">history</span>
-          <span>History</span>
+        <a href="/weekend" class="flex items-center space-x-2 p-3 hover:bg-black hover:text-white rounded-lg">
+          <span class="material-icons">weekend</span>
+          <span>Weekend Attandance</span>
         </a>
-        <a href="#" class="flex items-center space-x-2 p-3 hover:bg-black hover:text-white rounded-lg">
-          <span class="material-icons">feedback</span>
-          <span>Feedback</span>
+        <a href="/home" class="flex items-center space-x-2 p-3 hover:bg-black hover:text-white rounded-lg">
+          <span class="material-icons">home_filled</span>
+          <span>Work from home</span>
         </a>
-        <a href="#" class="flex items-center space-x-2 p-3 hover:bg-black hover:text-white rounded-lg">
-          <span class="material-icons">directions_car</span>
-          <span>Cars</span>
+        <a href="/leaves" class="flex items-center space-x-2 p-3 hover:bg-black hover:text-white rounded-lg">
+          <span class="material-icons">sick</span>
+          <span>Leaves</span>
         </a>
-        <a href="#" class="flex items-center space-x-2 p-3 hover:bg-black hover:text-white rounded-lg">
-          <span class="material-icons">place</span>
-          <span>Address</span>
-        </a>
-        <a href="#" class="flex items-center space-x-2 p-3 hover:bg-black hover:text-white rounded-lg">
-          <span class="material-icons">article</span>
-          <span>Quotes</span>
-        </a>
-        <a href="#" class="flex items-center space-x-2 p-3 hover:bg-black hover:text-white rounded-lg">
-          <span class="material-icons">settings</span>
-          <span>Settings</span>
-        </a>
+        
       </nav>
 
       <!-- User Profile -->
       <div class="mt-auto flex items-center space-x-4">
-        <img src="https://via.placeholder.com/40" class="rounded-full" alt="Profile Picture">
-        <div>
-          <p class="text-sm font-semibold">Shani</p>
-          <p class="text-xs text-gray-500">Online</p>
-        </div>
+        
       </div>
 
     </aside>
@@ -123,9 +110,11 @@
                         </form>
                     </x-slot>
                 </x-dropdown>
-            </div>
+        </div>
+        
 
       </div>
+      
 
       <!-- Main Section -->
 
