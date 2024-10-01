@@ -36,6 +36,8 @@ Route::post('/overtime/log', [OvertimeController::class, 'logOvertime']);
 Route::get('/daily', function () {
     return view('daily');
 });
+Route::post('/daily', [AttendanceController::class, 'store'])->name('daily');
+
 Route::get('/weekend', function () {
     return view('weekend');
 });
