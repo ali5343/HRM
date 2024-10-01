@@ -4,7 +4,9 @@ use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\LeavesController;
 use App\Http\Controllers\OvertimeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\WeekendController;
 use App\Http\Controllers\WfhController;
+use App\Models\Attendance;
 use Illuminate\Support\Facades\Route;
 
 /* Route::get('/', function () {
@@ -35,15 +37,20 @@ Route::get('/wfh/status', [WfhController::class, 'statusWFH']);
 
 Route::post('/overtime/log', [OvertimeController::class, 'logOvertime']);
 
+
 Route::get('/daily', function () {
     return view('daily');
 });
 
 Route::post('/daily', [AttendanceController::class, 'store'])->name('daily');
 
+
 Route::get('/weekend', function () {
     return view('weekend');
 });
+Route::get('weekend', [WeekendController::class, 'store'])->name('weekend');
+
+
 Route::get('/home', function () {
     return view('home');
 });

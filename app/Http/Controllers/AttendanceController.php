@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Attendance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -10,10 +11,6 @@ use Illuminate\Support\Facades\DB;
 
 class AttendanceController extends Controller
 {
-    public function index()
-    {
-        return view('attendance');
-    }
 
     public function clockIn(Request $request)
     {
@@ -41,8 +38,7 @@ class AttendanceController extends Controller
         $user = Auth::user();
 
         // Check if the user has already clocked in and hasn't clocked out yet
-        $existingAttendance = DB::table('attendance')
-            ->where('user_id', $user->id)
+        $existingAttendance = Attendance::where('user_id', $user->id)
             ->whereNull('clock_out')  // Look for a record without a clock_out
             ->first();
 

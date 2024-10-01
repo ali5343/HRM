@@ -4,7 +4,7 @@
     <div class="text-center text-gray-600">
         <!-- Add your main content here -->
 
-        
+
 
 
         <div class="mt-6 border border-gray-200 shadow-lg rounded-xl p-8 bg-white max-w-lg mx-auto">
@@ -15,6 +15,7 @@
             <div class="space-y-6">
 
                 <!-- Clock In Button -->
+                <form method="Post" action="/weekend"></form>
                 <button type="button"
                     class="text-white bg-green-600 hover:bg-green-500 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-base px-6 py-3  transition duration-300 ease-in-out">
                     Clock In
@@ -40,7 +41,7 @@
         </div>
 
 
-        
+
 
     </div>
 
