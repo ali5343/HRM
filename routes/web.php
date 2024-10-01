@@ -51,4 +51,5 @@ Route::get('/leaves', function () {
     return view('leaves');
 });
 
+
 require __DIR__.'/auth.php';
