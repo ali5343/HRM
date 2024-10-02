@@ -12,13 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('wfh', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('employee_id')->constrained()->onDelete('cascade');
+            $table->id()->autoIncrement();
+            $table->unsignedBigInteger('user_id');
             $table->date('date');
             $table->time('clock_in')->nullable();
             $table->time('clock_out')->nullable();
-            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
+            $table->time('total_hours')->nullable();
             $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

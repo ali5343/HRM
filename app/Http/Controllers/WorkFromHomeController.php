@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class AttendanceController extends Controller
+class WorkFromHomeController extends Controller
 {
     public function index()
     {
@@ -20,7 +21,7 @@ class AttendanceController extends Controller
             ->first();
 
         // Pass the attendance status to the view
-        return view('daily', [
+        return view('wfh', [
             'isClockedIn' => $existingAttendance ? true : false,
         ]);
     }
@@ -51,7 +52,7 @@ class AttendanceController extends Controller
         $user = Auth::user();
 
         // Check if the user has already clocked in and hasn't clocked out yet
-        $existingAttendance = DB::table('attendance')
+        $existingAttendance = DB::table('wfh')
             ->where('user_id', $user->id)
             ->whereNull('clock_out')  // Look for a record without a clock_out
             ->first();
