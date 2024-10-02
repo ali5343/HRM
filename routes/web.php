@@ -37,6 +37,8 @@ Route::get('/daily', function () {
     return view('daily');
 });
 Route::post('/daily', [AttendanceController::class, 'store'])->name('daily');
+Route::get('/daily', [AttendanceController::class, 'index'])->name('daily.index');
+
 
 Route::get('/weekend', function () {
     return view('weekend');
@@ -47,6 +49,8 @@ Route::get('/home', function () {
 Route::get('/leaves', function () {
     return view('leaves');
 });
+Route::post('/attendance/clock-in', [AttendanceController::class, 'clockIn']);
+Route::post('/attendance/clock-out', [AttendanceController::class, 'clockOut']);
 
 
 require __DIR__.'/auth.php';

@@ -8,22 +8,30 @@
             <h1 class="text-3xl font-semibold mb-8 text-gray-800">Daily Attendance</h1>
 
             <!-- Clock In Button -->
-            <form method="POST" action="/daily">
-              @csrf
-                <button type="submit"
-                    class="text-white bg-green-600 hover:bg-green-500 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-base px-6 py-3 mb-4  transition duration-300 ease-in-out">
-                    Clock In
-                </button>
-            </form>
+            @if (session('success'))
+            <div class="text-green-500 mb-4">
+                {{ session('success') }}
+            </div>
+        @endif
 
-            <!-- Clock Out Button -->
-            <form method="POST" action="/daily">
-                @csrf
-                <button type="submit"
-                    class="text-white bg-red-600 hover:bg-red-500 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-base px-6 py-3 mb-4  transition duration-300 ease-in-out">
-                    Clock Out
-                </button>
-            </form>
+        <form method="POST" action="/daily">
+            @csrf
+            <button type="submit"
+                class="text-white bg-green-600 hover:bg-green-500 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-base px-6 py-3 mb-4 transition duration-300 ease-in-out"
+                @if ($isClockedIn) disabled @endif>
+                Clock In
+            </button>
+        </form>
+
+        <!-- Clock Out Button -->
+        <form method="POST" action="/daily">
+            @csrf
+            <button type="submit"
+                class="text-white bg-red-600 hover:bg-red-500 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-base px-6 py-3 mb-4 transition duration-300 ease-in-out"
+                @if (!$isClockedIn) disabled @endif>
+                Clock Out
+            </button>
+        </form>
 
             <!-- Meeting Button -->
             <button type="button"
