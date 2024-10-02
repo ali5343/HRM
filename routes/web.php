@@ -43,12 +43,14 @@ Route::get('/daily', function () {
 });
 
 Route::post('/daily', [AttendanceController::class, 'store'])->name('daily');
+Route::get('/daily', [AttendanceController::class, 'index'])->name('daily.index');
 
 
 Route::get('/weekend', function () {
     return view('weekend');
 });
 Route::get('weekend', [WeekendController::class, 'store'])->name('weekend');
+Route::post('/weekend-attendance/store', [WeekendAttendanceController::class, 'store'])->name('weekend-attendance.store');
 
 
 Route::get('/home', function () {
