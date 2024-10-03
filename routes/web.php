@@ -15,9 +15,13 @@ use Illuminate\Support\Facades\Route;
     return view('dashboard');
 }); */
 
-Route::get('/', function () {
+Route::get('/',[AttendanceController::class,'view'], function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get('/dashboard', [AttendanceController::class, 'view']);
+
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

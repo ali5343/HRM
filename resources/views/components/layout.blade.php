@@ -37,7 +37,7 @@
 
       <!-- Menu Items -->
       <nav class="space-y-4">
-        <a href="/" class="flex items-center space-x-2 p-3 hover:bg-black hover:text-white rounded-lg">
+        <a href="/dashboard" class="flex items-center space-x-2 p-3 hover:bg-black hover:text-white rounded-lg">
           <span class="material-icons">dashboard</span>
           <span>Dashboard</span>
         </a>
