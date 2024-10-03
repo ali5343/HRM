@@ -15,7 +15,7 @@ class WorkFromHomeController extends Controller
         $user = Auth::user();
 
         // Check if the user has already clocked in and hasn't clocked out yet
-        $existingAttendance = DB::table('attendance')
+        $existingAttendance = DB::table('wfh')
             ->where('user_id', $user->id)
             ->whereNull('clock_out') // Look for a record without a clock_out
             ->first();
@@ -66,7 +66,7 @@ class WorkFromHomeController extends Controller
             $totalHours = $clockInTime->diffInMinutes($clockOutTime);
 
             // Update the existing attendance record
-            DB::table('attendance')
+            DB::table('wfh')
                 ->where('id', $existingAttendance->id)
                 ->update([
                     'clock_out' => $clockOutTime,
@@ -80,7 +80,7 @@ class WorkFromHomeController extends Controller
             $clockInTime = Carbon::now();
 
             // Insert a new record for clocking in
-            DB::table('attendance')->insert([
+            DB::table('wfh')->insert([
                 'user_id' => $user->id,       // Storing user ID
                 'clock_in' => $clockInTime,   // Storing the current time for clock-in
                 'created_at' => Carbon::now(),

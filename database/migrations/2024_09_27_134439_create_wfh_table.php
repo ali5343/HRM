@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('wfh', function (Blueprint $table) {
             $table->id()->autoIncrement();
             $table->unsignedBigInteger('user_id');
-            $table->date('date');
             $table->time('clock_in')->nullable();
             $table->time('clock_out')->nullable();
             $table->time('total_hours')->nullable();

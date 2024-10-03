@@ -14,7 +14,7 @@
             <div class="space-y-6">
 
                 <!-- Clock In Button -->
-                 <form method="POST" action="/wfh">
+                 <form method="POST" action="/workfh">
                     @csrf
                     <button type="submit"
                         class="text-white bg-green-600 hover:bg-green-500 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-base px-6 py-3  transition duration-300 ease-in-out"
@@ -24,10 +24,13 @@
                  </form>
 
                 <!-- Clock Out Button -->
-                <button type="button"
-                    class="text-white bg-red-600 hover:bg-red-500 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-base px-6 py-3  transition duration-300 ease-in-out">
-                    Clock Out
-                </button>
+                 <form method="POST" action="/workfh">
+                    @csrf
+                    <button type="submit"
+                        class="text-white bg-red-600 hover:bg-red-500 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-base px-6 py-3  transition duration-300 ease-in-out">
+                        Clock Out
+                    </button>
+                </form>
 
                 <!-- Request Button -->
                 <button type="button"
