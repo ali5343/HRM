@@ -15,6 +15,8 @@ Route::get('/', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('/dashboard', [AttendanceController::class, 'view']);
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -51,6 +53,7 @@ Route::get('/leaves', function () {
 });
 Route::post('/attendance/clock-in', [AttendanceController::class, 'clockIn']);
 Route::post('/attendance/clock-out', [AttendanceController::class, 'clockOut']);
+
 
 
 require __DIR__.'/auth.php';
