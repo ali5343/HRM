@@ -2,44 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class AttendanceController extends Controller
+class WorkFromHomeController extends Controller
 {
     public function index()
     {
         $user = Auth::user();
 
         // Check if the user has already clocked in and hasn't clocked out yet
-        $existingAttendance = DB::table('attendance')
+        $existingAttendance = DB::table('wfh')
             ->where('user_id', $user->id)
             ->whereNull('clock_out') // Look for a record without a clock_out
             ->first();
 
         // Pass the attendance status to the view
-        return view('daily', [
+        return view('wfh', [
             'isClockedIn' => $existingAttendance ? true : false,
-        ]);
-    }
-
-    public function view()
-    {
-        // Get the authenticated user
-        $user = Auth::user();
-
-        // Fetch attendance records for the user
-        $attendances = DB::table('attendance')
-            ->where('user_id', $user->id)
-            ->orderBy('created_at', 'desc') // Optional: order by the most recent first
-            ->get();
-
-        // Pass the attendance records to the view
-        return view('dashboard', [
-            'attendances' => $attendances,
-            'isClockedIn' => $attendances->whereNull('clock_out')->isNotEmpty(),
         ]);
     }
 
@@ -69,7 +52,7 @@ class AttendanceController extends Controller
         $user = Auth::user();
 
         // Check if the user has already clocked in and hasn't clocked out yet
-        $existingAttendance = DB::table('attendance')
+        $existingAttendance = DB::table('wfh')
             ->where('user_id', $user->id)
             ->whereNull('clock_out')  // Look for a record without a clock_out
             ->first();
@@ -83,7 +66,7 @@ class AttendanceController extends Controller
             $totalHours = $clockInTime->diffInMinutes($clockOutTime);
 
             // Update the existing attendance record
-            DB::table('attendance')
+            DB::table('wfh')
                 ->where('id', $existingAttendance->id)
                 ->update([
                     'clock_out' => $clockOutTime,
@@ -97,7 +80,7 @@ class AttendanceController extends Controller
             $clockInTime = Carbon::now();
 
             // Insert a new record for clocking in
-            DB::table('attendance')->insert([
+            DB::table('wfh')->insert([
                 'user_id' => $user->id,       // Storing user ID
                 'clock_in' => $clockInTime,   // Storing the current time for clock-in
                 'created_at' => Carbon::now(),

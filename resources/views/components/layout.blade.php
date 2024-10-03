@@ -49,7 +49,7 @@
           <span class="material-icons">weekend</span>
           <span>Weekend Attandance</span>
         </a>
-        <a href="/home" class="flex items-center space-x-2 p-3 hover:bg-black hover:text-white rounded-lg">
+        <a href="/workfh" class="flex items-center space-x-2 p-3 hover:bg-black hover:text-white rounded-lg">
           <span class="material-icons">home_filled</span>
           <span>Work from home</span>
         </a>
@@ -57,12 +57,12 @@
           <span class="material-icons">sick</span>
           <span>Leaves</span>
         </a>
-        
+
       </nav>
 
       <!-- User Profile -->
       <div class="mt-auto flex items-center space-x-4">
-        
+
       </div>
 
     </aside>
@@ -111,10 +111,10 @@
                     </x-slot>
                 </x-dropdown>
         </div>
-        
+
 
       </div>
-      
+
 
       <!-- Main Section -->
 

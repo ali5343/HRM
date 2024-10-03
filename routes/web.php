@@ -4,7 +4,11 @@ use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\LeavesController;
 use App\Http\Controllers\OvertimeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\WeekendController;
 use App\Http\Controllers\WfhController;
+use App\Http\Controllers\WorkFromHomeController;
+use App\Models\Attendance;
+use App\Models\Weekend;
 use Illuminate\Support\Facades\Route;
 
 /* Route::get('/', function () {
@@ -17,11 +21,15 @@ Route::get('/',[AttendanceController::class,'view'], function () {
 
 Route::get('/dashboard', [AttendanceController::class, 'view']);
 
+
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+/* Route::resource('attendance', AttendanceController::class)->only(['index', 'store']); */
 
 Route::get('/attendance', [AttendanceController::class, 'index']);
 Route::post('/attendance/clockin', [AttendanceController::class, 'clockIn']);
@@ -35,25 +43,38 @@ Route::get('/wfh/status', [WfhController::class, 'statusWFH']);
 
 Route::post('/overtime/log', [OvertimeController::class, 'logOvertime']);
 
+
+
 Route::get('/daily', function () {
     return view('daily');
 });
+
 Route::post('/daily', [AttendanceController::class, 'store'])->name('daily');
 Route::get('/daily', [AttendanceController::class, 'index'])->name('daily.index');
+
 
 
 Route::get('/weekend', function () {
     return view('weekend');
 });
-Route::get('/home', function () {
-    return view('home');
+
+Route::post('/weekend', [WeekendController::class, 'store'])->name('weekend');
+Route::get('/weekend', [WeekendController::class, 'index'])->name('weekend.index');
+
+
+
+Route::get('/workfh', function () {
+    return view('wfh');
 });
+
+Route::post('/workfh', [WorkFromHomeController::class, 'store'])->name('wfh');
+Route::get('/workfh', [WorkFromHomeController::class, 'index'])->name('wfh.index');
+
+
+
 Route::get('/leaves', function () {
     return view('leaves');
 });
-Route::post('/attendance/clock-in', [AttendanceController::class, 'clockIn']);
-Route::post('/attendance/clock-out', [AttendanceController::class, 'clockOut']);
-
 
 
 require __DIR__.'/auth.php';
