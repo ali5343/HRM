@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Route;
     return view('dashboard');
 }); */
 
-Route::get('/', function () {
+Route::get('/',[AttendanceController::class,'view'], function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
