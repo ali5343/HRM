@@ -23,6 +23,9 @@ Route::get('/dashboard', [DashboardController::class, 'view'])->middleware(['aut
 
 
 
+
+
+
   // Route to display the dashboard with weekend attendance
  
   

@@ -67,7 +67,7 @@ class WeekendController extends Controller
             $clockInTime = Carbon::parse($existingAttendance->clock_in);
 
             // Calculate total weekend hours worked
-            $totalMinutes = $clockInTime->diffInMinutes($clockOutTime);
+            $totalMinutes = $clockInTime->diffInHours($clockOutTime);
 
             // Update the existing weekend attendance record
             DB::table('weekend')
