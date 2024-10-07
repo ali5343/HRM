@@ -21,6 +21,7 @@ class WeekendController extends Controller
             'isClockedIn' => $existingAttendance ? true : false,
         ]);
     }
+    
 
     public function clockIn(Request $request)
     {
@@ -46,7 +47,7 @@ class WeekendController extends Controller
     public function store(Request $request)
     {
         $user = Auth::user();
-
+        
         $today = Carbon::now();
         $isWeekend = $today->isWeekend();
 
@@ -94,4 +95,5 @@ class WeekendController extends Controller
             return redirect()->back()->with('success', 'Weekend Clocked in successfully.');
         }
     }
+    
 }

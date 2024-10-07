@@ -10,16 +10,27 @@ use App\Http\Controllers\WorkFromHomeController;
 use App\Models\Attendance;
 use App\Models\Weekend;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DashboardController;
 
 /* Route::get('/', function () {
     return view('dashboard');
 }); */
 
-Route::get('/',[AttendanceController::class,'view'], function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/', [DashboardController::class, 'view'])->middleware(['auth', 'verified'])->name('home');
 
-Route::get('/dashboard', [AttendanceController::class, 'view']);
+Route::get('/dashboard', [DashboardController::class, 'view'])->middleware(['auth', 'verified'])->name('dashboard');
+
+
+
+
+  // Route to display the dashboard with weekend attendance
+ 
+  
+
+
+
+
+
 
 
 

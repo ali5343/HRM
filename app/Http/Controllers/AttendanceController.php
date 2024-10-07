@@ -25,23 +25,8 @@ class AttendanceController extends Controller
         ]);
     }
 
-    public function view()
-    {
-        // Get the authenticated user
-        $user = Auth::user();
-
-        // Fetch attendance records for the user
-        $attendances = DB::table('attendance')
-            ->where('user_id', $user->id)
-            ->orderBy('created_at', 'desc') // Optional: order by the most recent first
-            ->get();
-
-        // Pass the attendance records to the view
-        return view('dashboard', [
-            'attendances' => $attendances,
-            'isClockedIn' => $attendances->whereNull('clock_out')->isNotEmpty(),
-        ]);
-    }
+    
+    
 
     public function clockIn(Request $request)
     {
@@ -80,7 +65,7 @@ class AttendanceController extends Controller
             $clockInTime = Carbon::parse($existingAttendance->clock_in);
 
             // Calculate total hours worked
-            $totalHours = $clockInTime->diffInMinutes($clockOutTime);
+            $totalHours = $clockInTime->diffInHours($clockOutTime);
 
             // Update the existing attendance record
             DB::table('attendance')
