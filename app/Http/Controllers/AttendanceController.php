@@ -78,16 +78,16 @@ class AttendanceController extends Controller
             // Clock Out
             $clockOutTime = Carbon::now();
             $clockInTime = Carbon::parse($existingAttendance->clock_in);
-
-            // Calculate total hours worked
-            $totalHours = $clockInTime->diffInMinutes($clockOutTime);
+            $totalMinutes = $clockInTime->diffInMinutes($clockOutTime);
+            // Calculate total weekend hours worked
+            $formattedTime = Carbon::createFromTimestamp(0)->addMinutes($totalMinutes)->format('H:i');
 
             // Update the existing attendance record
             DB::table('attendance')
                 ->where('id', $existingAttendance->id)
                 ->update([
                     'clock_out' => $clockOutTime,
-                    'total_hours' => $totalHours,
+                    'total_hours' => $formattedTime,
                     'updated_at' => Carbon::now(),
                 ]);
 

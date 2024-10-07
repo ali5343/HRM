@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Attendance;
 use App\Models\Weekend;
+use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -47,6 +48,7 @@ class WeekendController extends Controller
     {
         $user = Auth::user();
 
+
         $today = Carbon::now();
         $isWeekend = $today->isWeekend();
 
@@ -64,16 +66,16 @@ class WeekendController extends Controller
             // Clock Out for weekend work
             $clockOutTime = Carbon::now();
             $clockInTime = Carbon::parse($existingAttendance->clock_in);
-
-            // Calculate total weekend hours worked
             $totalMinutes = $clockInTime->diffInMinutes($clockOutTime);
+            // Calculate total weekend hours worked
+            $formattedTime = Carbon::createFromTimestamp(0)->addMinutes($totalMinutes)->format('H:i');
 
             // Update the existing weekend attendance record
             DB::table('weekend')
             ->where('id', $existingAttendance->id)
             ->update([
                 'clock_out' => $clockOutTime,
-                'total_hours' => $totalMinutes,
+                'total_hours' => $formattedTime,
                 'updated_at' => Carbon::now(),
             ]);
 
