@@ -130,6 +130,8 @@
 </div>
 
 
+
+
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 px-4 mt-8 sm:px-8">
     <!-- Attendance Records -->
     <div class="flex flex-col bg-white border rounded-lg shadow-md overflow-hidden">
