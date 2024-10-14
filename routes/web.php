@@ -42,6 +42,8 @@ Route::get('/requests', function () {
 Route::get('/pending-requests', [AdminRequestController::class, 'index'])->name('admin.requests.pending');
 Route::post('/admin/requests/{id}/approve', [AdminRequestController::class, 'approve'])->name('admin.requests.approve');
 
+Route::get('/admin-dashboard', [AdminRequestController::class, 'view'])->name('admin.requests.pending');
+
 
 /* Route::middleware('role:admin')->group(function (){
     Route::get('/admin/requests', [AdminRequestController::class, 'index'])->name('admin.requests');

@@ -6,6 +6,8 @@ use App\Models\Attendance;
 use App\Models\Request as UserRequest;
 use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Support\Carbon;
+use App\Notifications\RequestAccepted; // Import the notification class
+use App\Models\User;
 
 class AdminRequestController extends Controller
 {
@@ -20,6 +22,18 @@ class AdminRequestController extends Controller
         
         // Pass the requests to the view
         return view('admin.dashboard', compact('requests'));
+    }
+    public function view()
+    {
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403); // Access denied
+        }
+
+        // Fetch pending requests
+        $requests = UserRequest::where('is_approved', false)->get();
+        
+        // Pass the requests to the view
+        return view('admin.index', compact('requests'));
     }
 
     public function approve($id)
@@ -53,10 +67,15 @@ class AdminRequestController extends Controller
                     break;
             }
 
-            return redirect()->back()->with('success', 'Request approved and processed successfully.');
+            // Notify the user of approval
+            $user = User::find($requestEntry->user_id);
+            if ($user) {
+                $user->notify(new RequestAccepted($requestEntry)); // Send the notification
+            }
+
+            return redirect()->back()->with('success', 'Request approved, processed, and user notified.');
         }
 
         return redirect()->back()->with('error', 'Request not found.');
     }
-    
 }

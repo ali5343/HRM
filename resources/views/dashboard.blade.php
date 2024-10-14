@@ -1,4 +1,11 @@
 <x-layout>
+@foreach (auth()->user()->notifications as $notification)
+    <div class="notification bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4 rounded" role="alert">
+        <p>{{ $notification->data['message'] }}</p>
+        <small>{{ $notification->created_at->diffForHumans() }}</small>
+    </div>
+@endforeach
+
 <div class="grid grid-cols-1 gap-4 px-4 mt-8 sm:grid-cols-4 sm:px-8">
     <!-- Today's Total Hours Card -->
     <div class="flex items-center bg-white border rounded-lg overflow-hidden shadow-lg transition-transform transform hover:scale-105">
