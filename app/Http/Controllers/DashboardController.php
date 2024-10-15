@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -18,9 +19,10 @@ class DashboardController extends Controller
             // Fetch additional data for the admin dashboard
             $allAttendances = DB::table('attendance')->orderBy('created_at', 'desc')->get();
             $allWeekendAttendances = DB::table('weekend')->orderBy('created_at', 'desc')->get();
+            $allUsers = User::count(); // Assuming you are counting the total number of users            
 
             // Pass the relevant data to the admin view
-            return redirect('/pending-requests');
+            return view('admin.index', compact('allUsers'));
         }
 
         // Fetch attendance records for the user
