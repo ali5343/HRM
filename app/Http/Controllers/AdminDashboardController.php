@@ -1,63 +1,41 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Carbon\Carbon;
 
 class AdminDashboardController extends Controller
-{  public function view()
+{
+    public function view()
     {
-    $user = Auth::user();
-       
-    if (Auth::user()->hasRole('admin')) {
-        // Fetch additional data for the admin dashboard
-        $allAttendances = DB::table('attendance')->orderBy('created_at', 'desc')->get();
-        $allWeekendAttendances = DB::table('weekend')->orderBy('created_at', 'desc')->get();
-        $allUsers = User::count();
-        $username = User::get('name'); // Assuming you are counting the total number of users
+        $user = Auth::user();
+
+        if ($user->hasRole('admin')) {
+            // Fetch all users
+            $allUsers = User::all();
+
+            // Fetch total attendance hours for each user
+            $userAttendance = DB::table('attendance')
+                ->select('user_id', DB::raw('SUM(total_hours) as total_hours'))
+                ->groupBy('user_id')
+                ->get();
+
+            // Map attendance data to user data
+            $usersWithAttendance = $allUsers->map(function($user) use ($userAttendance) {
+                $attendance = $userAttendance->firstWhere('user_id', $user->id);
+                $user->total_hours = $attendance ? $attendance->total_hours : 0;
+                return $user;
+            });
+
             // Pass the relevant data to the admin view
-            return view('admin.index', compact('allUsers','username'));
-        // Pass the relevant data to the admin view
-        
+            return view('admin.index', compact('usersWithAttendance'));
+        }
+
+        // If not admin, redirect or show a different view (as needed)
+        return redirect()->route('dashboard');
     }
-    $startOfWeek = Carbon::now()->startOfWeek();
-    $endOfWeek = Carbon::now()->endOfWeek();
-    $weeklyTotalHours = $attendances->filter(function ($attendance) use ($startOfWeek, $endOfWeek) {
-        return Carbon::parse($attendance->created_at)->between($startOfWeek, $endOfWeek);
-    })->sum('total_hours');
-
-    // Calculate total hours for the current month
-    $startOfMonth = Carbon::now()->startOfMonth();
-    $endOfMonth = Carbon::now()->endOfMonth();
-    $monthlyTotalHours = $attendances->filter(function ($attendance) use ($startOfMonth, $endOfMonth) {
-        return Carbon::parse($attendance->created_at)->between($startOfMonth, $endOfMonth);
-    })->sum('total_hours');
-
-    // Define the total hours expected per week
-    $totalHoursPerWeek = 36;
-
-    // Calculate remaining hours left in the week
-    $leftHoursPerWeek = $totalHoursPerWeek - $weeklyTotalHours;
-
-    // Define the total hours expected per month
-    $totalMonthlyHours = 144;
-
-    // Calculate remaining hours left in the month
-    $leftHoursPerMonth = $totalMonthlyHours - $monthlyTotalHours;
-
-    // Pass the attendance records, today's total hours, weekly total hours,
-    // monthly total hours, left hours per week, and left hours per month to the view
-    return view('dashboard', [
-        'attendances' => $attendances,
-        'weekendAttendances' => $weekendAttendances,
-        
-        'weeklyTotalHours' => $weeklyTotalHours,
-        'monthlyTotalHours' => $monthlyTotalHours,
-        'leftHoursPerWeek' => $leftHoursPerWeek,
-        'leftHoursPerMonth' => $leftHoursPerMonth, // Added left hours for the month
-        
-    ]);
-}
 }
