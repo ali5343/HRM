@@ -20,7 +20,7 @@ class DashboardController extends Controller
             $allWeekendAttendances = DB::table('weekend')->orderBy('created_at', 'desc')->get();
 
             // Pass the relevant data to the admin view
-            return redirect('/pending-requests');
+            return redirect('/admin-dashboard');
         }
 
         // Fetch attendance records for the user
