@@ -13,6 +13,7 @@ use App\Models\Weekend;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RequestController;
+use App\http\Controllers\AdminDashboardController;
 
 /* Route::get('/', function () {
     return view('dashboard');
@@ -42,8 +43,7 @@ Route::get('/requests', function () {
 Route::get('/pending-requests', [AdminRequestController::class, 'index'])->name('admin.requests.pending');
 Route::post('/admin/requests/{id}/approve', [AdminRequestController::class, 'approve'])->name('admin.requests.approve');
 
-Route::get('/admin-dashboard', [DashboardController::class, 'view'])->name('admin.index');
-
+Route::get('/admin-dashboard', [AdminDashboardController::class, 'view']);
 
 
 
