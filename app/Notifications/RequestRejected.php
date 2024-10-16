@@ -7,7 +7,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class RequestAccepted extends Notification
+class RequestRejected extends Notification
 {
     use Queueable;
 
@@ -35,7 +35,7 @@ class RequestAccepted extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('Your request for ' . ucfirst($this->request->type) . ' has been approved.')
+                    ->line('Your request for ' . ucfirst($this->request->type) . ' has been rejected.')
                     ->action('View Details', url('/requests/' . $this->request->id))
                     ->line('Thank you for using our application!');
     }
@@ -47,7 +47,8 @@ class RequestAccepted extends Notification
     {
         return [
             'request_id' => $this->request->id,
-            'message' => 'Your request for ' . ucfirst($this->request->type) . ' has been approved.',
+            'message' => 'Your request for ' . ucfirst($this->request->type) . ' has been rejected.',
+            
         ];
     }
 }

@@ -8,6 +8,7 @@ use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Support\Carbon;
 use App\Notifications\RequestAccepted; // Import the notification class
 use App\Models\User;
+use App\Notifications\RequestRejected;
 
 class AdminRequestController extends Controller
 {
@@ -59,7 +60,15 @@ class AdminRequestController extends Controller
                     break;
 
                 case 'meeting':
-                    // Log meeting hours or take other actions
+                    // Log meeting hours
+                    Attendance::create([
+                        'user_id' => $requestEntry->user_id,
+                        'clock_in' => $requestEntry->start_time,
+                        'clock_out' => $requestEntry->end_time,
+                        'total_hours' => $requestEntry->total_hours,
+                        'is_meeting' => true,
+                    ]);
+
                     break;
 
                 case 'leave':
@@ -74,6 +83,42 @@ class AdminRequestController extends Controller
             }
 
             return redirect()->back()->with('success', 'Request approved, processed, and user notified.');
+        }
+
+        return redirect()->back()->with('error', 'Request not found.');
+    }
+
+    public function reject($id)
+    {
+        $requestEntry = \App\Models\Request::find($id);
+        if ($requestEntry) {
+            // Mark the request as rejected
+            $requestEntry->update(['is_approved' => false]);
+
+            // After rejection, perform additional actions based on the request type
+            switch ($requestEntry->type) {
+                case 'weekend':
+                case 'wfh':
+                case 'overtime':
+                    // Notify the user of rejection
+                    break;
+
+                case 'meeting':
+                    // Notify the user of rejection
+                    break;
+
+                case 'leave':
+                    // Notify the user of rejection
+                    break;
+            }
+
+            // Notify the user of rejection
+            $user = User::find($requestEntry->user_id);
+            if ($user) {
+                $user->notify(new RequestRejected($requestEntry)); // Send the notification
+            }
+
+            return redirect()->back()->with('error', 'Request rejected and user notified.');
         }
 
         return redirect()->back()->with('error', 'Request not found.');

@@ -42,14 +42,11 @@ Route::get('/requests', function () {
 
 Route::get('/pending-requests', [AdminRequestController::class, 'index'])->name('admin.requests.pending');
 Route::post('/admin/requests/{id}/approve', [AdminRequestController::class, 'approve'])->name('admin.requests.approve');
+Route::post('/admin/requests/{id}/reject', [AdminRequestController::class, 'reject'])->name('admin.requests.reject');
 
 Route::get('/admin-dashboard', [AdminDashboardController::class, 'view']);
 
 
-/* Route::middleware('role:admin')->group(function (){
-    Route::get('/admin/requests', [AdminRequestController::class, 'index'])->name('admin.requests');
-    Route::post('/admin/requests/{id}/approve', [AdminRequestController::class, 'approve'])->name('admin.requests.approve');
-}); */
 
 
 /* Route::middleware(['auth', 'role:admin'])->group(function () {
@@ -59,7 +56,7 @@ Route::get('/admin-dashboard', [AdminDashboardController::class, 'view']);
 }); */
 
 
-/* Route::resource('attendance', AttendanceController::class)->only(['index', 'store']); */
+
 
 Route::get('/attendance', [AttendanceController::class, 'index']);
 Route::post('/attendance/clockin', [AttendanceController::class, 'clockIn']);
