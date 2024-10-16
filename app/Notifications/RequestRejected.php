@@ -48,7 +48,6 @@ class RequestRejected extends Notification
         return [
             'request_id' => $this->request->id,
             'message' => 'Your request for ' . ucfirst($this->request->type) . ' has been rejected.',
-            
         ];
     }
 }
