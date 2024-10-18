@@ -1,6 +1,12 @@
 <x-layout>
 @foreach (auth()->user()->notifications as $notification)
-    <div class="notification bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4 rounded" role="alert">
+@php
+        $isRequestRejected = $notification->type === 'App\Notifications\RequestRejected';
+        $bgColor = $isRequestRejected ? 'bg-red-100' : 'bg-green-100';
+        $borderColor = $isRequestRejected ? 'border-red-500' : 'border-green-500';
+        $textColor = $isRequestRejected ? 'text-red-700' : 'text-green-700';
+    @endphp
+    <div class="notification {{ $bgColor }} border-l-4 {{ $borderColor }} {{ $textColor }} p-4 mb-4 rounded" role="alert">
         <p>{{ $notification->data['message'] }}</p>
         <small>{{ $notification->created_at->diffForHumans() }}</small>
     </div>

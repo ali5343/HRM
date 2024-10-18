@@ -40,6 +40,18 @@ class PermissionSeeder extends Seeder
         $user->assignRole($role1);
 
         $user = User::factory()->create([
+            'name' => 'Zeeshan',
+            'email' => 'zeeshan@eg.com'
+        ]);
+        $user->assignRole($role1);
+
+        $user = User::factory()->create([
+            'name' => 'Ali',
+            'email' => 'ali@eg.com'
+        ]);
+        $user->assignRole($role1);
+
+        $user = User::factory()->create([
             'name' => 'admin',
             'email' => 'admin@eg.com'
         ]);

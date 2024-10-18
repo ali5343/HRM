@@ -47,7 +47,8 @@ class RequestAccepted extends Notification
     {
         return [
             'request_id' => $this->request->id,
-            'message' => 'Your request for ' . ucfirst($this->request->type) . ' has been approved.',
+            'message' => 'Your request for ' . ucfirst($this->request->type) . ' has been accepted.',
+            'status' => 'accepted', // Change to 'accepted'
         ];
     }
 }

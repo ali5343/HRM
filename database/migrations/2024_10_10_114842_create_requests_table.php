@@ -18,7 +18,7 @@ return new class extends Migration
             $table->timestamp('start_time')->nullable(); // For clock_in or meeting start
             $table->timestamp('end_time')->nullable();   // For clock_out or meeting end
             $table->text('reason')->nullable();          // For overtime/leave reasons
-            $table->boolean('is_approved')->default(false);
+            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
             $table->integer('total_hours')->nullable();  // Total hours for work
             $table->timestamps();
         });

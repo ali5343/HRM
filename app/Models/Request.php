@@ -15,7 +15,7 @@ class Request extends Model
         'start_time',
         'end_time',
         'reason',
-        'is_approved',
+        'status',
         'total_hours'
     ];
 

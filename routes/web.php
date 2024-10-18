@@ -14,10 +14,20 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RequestController;
 use App\http\Controllers\AdminDashboardController;
+use App\http\Controllers\HistoryController;
 
 /* Route::get('/', function () {
     return view('dashboard');
 }); */
+Route::get('/admin-history', [HistoryController::class, 'adminview'])->name('history');
+Route::get('/history', [HistoryController::class, 'userview'])->name('user-history');
+
+
+
+// Route for admins with the "admin" role
+/* Route::get('/admin-history', function () {
+    return view('history');
+})->middleware(['auth', 'role:admin']); */
 
 Route::get('/', [DashboardController::class, 'view'])->middleware(['auth', 'verified'])->name('home');
 
