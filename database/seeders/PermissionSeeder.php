@@ -55,7 +55,7 @@ class PermissionSeeder extends Seeder
             'name' => 'admin',
             'email' => 'admin@eg.com'
         ]);
-        $user->assignRole($role2);
+        $user->assignRole([$role1, $role2]);
 
        /*  $user = User::factory()->create([
             'name' => 'example super-admin',

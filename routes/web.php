@@ -72,16 +72,6 @@ Route::get('/attendance', [AttendanceController::class, 'index']);
 Route::post('/attendance/clockin', [AttendanceController::class, 'clockIn']);
 Route::post('/attendance/clockout', [AttendanceController::class, 'clockOut']);
 
-Route::post('/leave/request', [LeavesController::class, 'requestLeave']);
-Route::get('/leave/status', [LeavesController::class, 'leaveStatus']);
-
-Route::post('/wfh/request', [WfhController::class, 'requestWFH']);
-Route::get('/wfh/status', [WfhController::class, 'statusWFH']);
-
-Route::post('/overtime/log', [OvertimeController::class, 'logOvertime']);
-
-
-
 Route::get('/daily', function () {
     return view('daily');
 });
