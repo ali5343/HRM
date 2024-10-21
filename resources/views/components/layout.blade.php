@@ -39,9 +39,22 @@
             <span class="material-icons">dashboard</span>
             <span>Dashboard</span>
           </a>
+          <a href="/daily" class="flex items-center space-x-2 p-3 hover:bg-black hover:text-white rounded-lg">
+            <span class="material-icons">today</span>
+            <span>Daily Attendance</span>
+          </a>
+         
+          <a href="/requests" class="flex items-center space-x-2 p-3 hover:bg-black hover:text-white rounded-lg">
+            <span class="material-icons">request_page</span>
+            <span>Requests</span>
+          </a>
           <a href="/pending-requests" class="flex items-center space-x-2 p-3 hover:bg-black hover:text-white rounded-lg">
             <span class="material-icons">sick</span>
             <span>Aprovals</span>
+          </a>
+          <a href="/admin-history" class="flex items-center space-x-2 p-3 hover:bg-black hover:text-white rounded-lg">
+            <span class="material-icons">history</span>
+            <span>History</span>
           </a>
           
         @else
@@ -53,21 +66,14 @@
             <span class="material-icons">today</span>
             <span>Daily Attendance</span>
           </a>
-          <a href="/weekend" class="flex items-center space-x-2 p-3 hover:bg-black hover:text-white rounded-lg">
-            <span class="material-icons">weekend</span>
-            <span>Weekend Attendance</span>
-          </a>
-          <a href="/workfh" class="flex items-center space-x-2 p-3 hover:bg-black hover:text-white rounded-lg">
-            <span class="material-icons">home_filled</span>
-            <span>Work from home</span>
-          </a>
-          <a href="/leaves" class="flex items-center space-x-2 p-3 hover:bg-black hover:text-white rounded-lg">
-            <span class="material-icons">sick</span>
-            <span>Leaves</span>
-          </a>
+         
           <a href="/requests" class="flex items-center space-x-2 p-3 hover:bg-black hover:text-white rounded-lg">
-            <span class="material-icons">sick</span>
+            <span class="material-icons">request_page</span>
             <span>Requests</span>
+          </a>
+          <a href="/history" class="flex items-center space-x-2 p-3 hover:bg-black hover:text-white rounded-lg">
+            <span class="material-icons">history</span>
+            <span>History</span>
           </a>
         @endif
         

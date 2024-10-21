@@ -11,7 +11,6 @@
                 <option value="wfh" {{ old('type') == 'wfh' ? 'selected' : '' }}>Work from Home</option>
                 <option value="overtime" {{ old('type') == 'overtime' ? 'selected' : '' }}>Overtime</option>
                 <option value="leave" {{ old('type') == 'leave' ? 'selected' : '' }}>Leave</option>
-                <option value="half-leave" {{ old('type') == 'half-leave' ? 'selected' : '' }}>Half Leave</option>
             </select>
             @error('type')
                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>

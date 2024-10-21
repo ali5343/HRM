@@ -14,10 +14,20 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RequestController;
 use App\http\Controllers\AdminDashboardController;
+use App\http\Controllers\HistoryController;
 
 /* Route::get('/', function () {
     return view('dashboard');
 }); */
+Route::get('/admin-history', [HistoryController::class, 'adminview'])->name('history');
+Route::get('/history', [HistoryController::class, 'userview'])->name('user-history');
+
+
+
+// Route for admins with the "admin" role
+/* Route::get('/admin-history', function () {
+    return view('history');
+})->middleware(['auth', 'role:admin']); */
 
 Route::get('/', [DashboardController::class, 'view'])->middleware(['auth', 'verified'])->name('home');
 
@@ -46,9 +56,8 @@ Route::post('/admin/requests/{id}/reject', [AdminRequestController::class, 'reje
 
 Route::get('/admin-dashboard', [AdminDashboardController::class, 'view']);
 
-/* Route::get('/attendance/weekly', [AttendanceController::class, 'weeklyTotalHours'])->name('attendance.weekly');
-Route::get('/attendance/monthly', [AttendanceController::class, 'monthlyTotalHours'])->name('attendance.monthly');
- */
+
+
 
 /* Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/dashboard', [AdminRequestController::class, 'index'])->name('admin.dashboard');
@@ -62,16 +71,6 @@ Route::get('/attendance/monthly', [AttendanceController::class, 'monthlyTotalHou
 Route::get('/attendance', [AttendanceController::class, 'index']);
 Route::post('/attendance/clockin', [AttendanceController::class, 'clockIn']);
 Route::post('/attendance/clockout', [AttendanceController::class, 'clockOut']);
-
-Route::post('/leave/request', [LeavesController::class, 'requestLeave']);
-Route::get('/leave/status', [LeavesController::class, 'leaveStatus']);
-
-Route::post('/wfh/request', [WfhController::class, 'requestWFH']);
-Route::get('/wfh/status', [WfhController::class, 'statusWFH']);
-
-Route::post('/overtime/log', [OvertimeController::class, 'logOvertime']);
-
-
 
 Route::get('/daily', function () {
     return view('daily');
