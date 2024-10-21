@@ -19,7 +19,7 @@ class AdminRequestController extends Controller
         }
 
         // Fetch pending requests
-        $requests = UserRequest::where('is_approved', false)->get();
+        $requests = UserRequest::where('status', 'pending' )->get();
         
         // Pass the requests to the view
         return view('admin.dashboard', compact('requests'));
@@ -31,7 +31,7 @@ class AdminRequestController extends Controller
         }
 
         // Fetch pending requests
-        $requests = UserRequest::where('is_approved', false)->get();
+        $requests = UserRequest::where('status', 'pending')->get();
         
         // Pass the requests to the view
         return view('admin.index', compact('requests'));
@@ -42,7 +42,7 @@ class AdminRequestController extends Controller
         $requestEntry = \App\Models\Request::find($id);
         if ($requestEntry) {
             // Mark the request as approved
-            $requestEntry->update(['is_approved' => true]);
+            $requestEntry->update(['status' => 'approved']);
 
             // After approval, perform additional actions based on the request type
             switch ($requestEntry->type) {
@@ -72,7 +72,26 @@ class AdminRequestController extends Controller
                     break;
 
                 case 'leave':
-                    // Handle leave (e.g., deduct leave days)
+                    // deduct leave hours from the user's leave balance
+                    $attendance = Attendance::create([
+                        'user_id' => $requestEntry->user_id,
+                        'clock_in' => $requestEntry->start_time,
+                        'clock_out' => $requestEntry->end_time,
+                        'total_hours' => $requestEntry->total_hours,
+                        'is_leave' => true,
+                    ]);
+
+                    // Calculate the difference in hours between clock_in and clock_out
+                    $clockOut = Carbon::parse($attendance->clock_out);
+                    $clockIn = Carbon::parse($attendance->clock_in);
+                    $hoursWorked = $clockIn->diffInHours($clockOut);
+
+                    $attendance->total_hours = $hoursWorked - 8; // Deduct 8 hours for a day of leave
+                    $attendance->save();
+                    
+                     
+                     
+                     
                     break;
             }
 
@@ -93,7 +112,7 @@ class AdminRequestController extends Controller
         $requestEntry = \App\Models\Request::find($id);
         if ($requestEntry) {
             // Mark the request as rejected
-            $requestEntry->update(['is_approved' => false]);
+            $requestEntry->update(['status' => 'rejected']);
 
             // After rejection, perform additional actions based on the request type
             switch ($requestEntry->type) {
@@ -118,7 +137,7 @@ class AdminRequestController extends Controller
                 $user->notify(new RequestRejected($requestEntry)); // Send the notification
             }
 
-            return redirect()->back()->with('error', 'Request rejected and user notified.');
+            return redirect()->back()->with('success', 'Request rejected and user notified.');
         }
 
         return redirect()->back()->with('error', 'Request not found.');

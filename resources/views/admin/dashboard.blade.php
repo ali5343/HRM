@@ -1,19 +1,19 @@
 <x-layout>
-<div class="container mx-auto my-8 p-6 bg-white shadow-lg rounded-lg">
-    <h1 class="text-2xl font-semibold mb-4">Admin Dashboard - Pending Requests</h1>
+    <div class="container mx-auto my-8 p-6 bg-white shadow-lg rounded-lg">
+        <h1 class="text-2xl font-semibold mb-6 text-gray-800">Admin Dashboard - Pending Requests</h1>
 
-    <!-- Display success or error messages -->
-    @if (session('success'))
-        <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4 rounded" role="alert">
-            <p>{{ session('success') }}</p>
-        </div>
-    @endif
+        <!-- Display success or error messages -->
+        @if (session('success'))
+            <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4 rounded" role="alert">
+                <p>{{ session('success') }}</p>
+            </div>
+        @endif
 
-    @if (session('error'))
-        <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4 rounded" role="alert">
-            <p>{{ session('error') }}</p>
-        </div>
-    @endif
+        @if (session('error'))
+            <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4 rounded" role="alert">
+                <p>{{ session('error') }}</p>
+            </div>
+        @endif
 
     <!-- Assuming you have a collection of requests to display -->
     @if ($requests->isEmpty())

@@ -46,8 +46,9 @@ Route::post('/admin/requests/{id}/reject', [AdminRequestController::class, 'reje
 
 Route::get('/admin-dashboard', [AdminDashboardController::class, 'view']);
 
-
-
+/* Route::get('/attendance/weekly', [AttendanceController::class, 'weeklyTotalHours'])->name('attendance.weekly');
+Route::get('/attendance/monthly', [AttendanceController::class, 'monthlyTotalHours'])->name('attendance.monthly');
+ */
 
 /* Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/dashboard', [AdminRequestController::class, 'index'])->name('admin.dashboard');
