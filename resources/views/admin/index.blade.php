@@ -32,7 +32,7 @@
                 </div>
                 <div class="mt-4">
                     <p class="text-lg"><strong>Monthly Hours:</strong> <span id="userMonthlyHours" class="text-indigo-600 font-medium">--</span> / 144 hours</p>
-                    <p class="text-lg mt-2"><strong>Remaining Monthly Hours:</strong> <span id="userRemainingMonthlyHours" class="text-indigo-600 font-medium">--</span></p>
+                    <p class="text-lg mt-2"><strong>Remaining monthly Hours:</strong> <span id="userRemainingMonthlyHours" class="text-indigo-600 font-medium">--</span></p>
                 </div>
             </div>
         </div>
