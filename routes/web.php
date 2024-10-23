@@ -54,7 +54,7 @@ Route::get('/pending-requests', [AdminRequestController::class, 'index'])->name(
 Route::post('/admin/requests/{id}/approve', [AdminRequestController::class, 'approve'])->name('admin.requests.approve');
 Route::post('/admin/requests/{id}/reject', [AdminRequestController::class, 'reject'])->name('admin.requests.reject');
 
-Route::get('/admin-dashboard', [AdminDashboardController::class, 'view']);
+Route::get('/admin-dashboard', [DashboardController::class, 'admin_index'])->name('admin-dashboard');
 
 
 
