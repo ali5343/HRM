@@ -13,193 +13,172 @@ class DashboardController extends Controller
 {
     public function view()
     {
-        // Get the authenticated user
         $user = Auth::user();
-       
-        if ($user->hasRole('admin')) {
-            // Fetch additional data for the admin dashboard
-            $allAttendances = DB::table('attendance')->orderBy('created_at', 'desc')->get();
-            $allUsers = User::count(); // Count total number of users
-        
-            // Define total expected hours per week and per month
-            $totalHoursPerWeek = 36;
-            $totalHoursPerMonth = 144;
-        
-            // Define the start and end of today, week, and month
-            $startOfWeek = Carbon::now()->startOfWeek();
-            $endOfWeek = Carbon::now()->endOfWeek();
-            $startOfMonth = Carbon::now()->startOfMonth();
-            $endOfMonth = Carbon::now()->endOfMonth();
-            $startOfToday = Carbon::now()->startOfDay();
-            $endOfToday = Carbon::now()->endOfDay();
-        
-            // Query user attendance for the current week, month, and day
-            $userAttendance = Attendance::query()
-                ->select('user_id',
-                    DB::raw('SUM(CASE WHEN created_at BETWEEN "' . $startOfToday . '" AND "' . $endOfToday . '" THEN total_hours ELSE 0 END) as today_hours'),
-                    DB::raw('SUM(CASE WHEN created_at BETWEEN "' . $startOfWeek . '" AND "' . $endOfWeek . '" THEN total_hours ELSE 0 END) as weekly_hours'),
-                    DB::raw('SUM(CASE WHEN created_at BETWEEN "' . $startOfMonth . '" AND "' . $endOfMonth . '" THEN total_hours ELSE 0 END) as monthly_hours')
-                )
-                ->groupBy('user_id')
-                ->get();
-        
-            // Fetch leave days for users this week and this month
-            $leaveDaysThisWeek = Attendance::query()
-                ->select('user_id', DB::raw('COUNT(*) as leave_days_this_week'))
-                ->where('is_leave', true)
-                ->whereBetween('clock_in', [$startOfWeek, $endOfWeek])
-                ->groupBy('user_id')
-                ->get();
-        
-            $leaveDaysThisMonth = Attendance::query()
-                ->select('user_id', DB::raw('COUNT(*) as leave_days_this_month'))
-                ->where('is_leave', true)
-                ->whereBetween('clock_in', [$startOfMonth, $endOfMonth])
-                ->groupBy('user_id')
-                ->get();
-        
-            // Map user attendance and calculate remaining hours, considering leave days
-            $usersWithAttendance = $allUsers->map(function($user) use ($userAttendance, $leaveDaysThisWeek, $leaveDaysThisMonth, $totalHoursPerWeek, $totalHoursPerMonth) {
-                $attendance = $userAttendance->firstWhere('user_id', $user->id);
-                $user->today_hours = $attendance ? $attendance->today_hours : 0;
-                $user->weekly_hours = $attendance ? $attendance->weekly_hours : 0;
-                $user->monthly_hours = $attendance ? $attendance->monthly_hours : 0;
-        
-                // Find the leave days for the user
-                $weeklyLeaveDays = $leaveDaysThisWeek->firstWhere('user_id', $user->id)->leave_days_this_week ?? 0;
-                $monthlyLeaveDays = $leaveDaysThisMonth->firstWhere('user_id', $user->id)->leave_days_this_month ?? 0;
-        
-                // Subtract leave hours (8 hours per leave day) from total expected hours
-                $user->remaining_weekly_hours = $totalHoursPerWeek - $user->weekly_hours - ($weeklyLeaveDays * 8);
-                $user->remaining_monthly_hours = $totalHoursPerMonth - $user->monthly_hours - ($monthlyLeaveDays * 8);
-                
-                return $user;
-            });
-        
-            // Fetch admin attendance information
-            $adminAttendance = $usersWithAttendance->firstWhere('id', $user->id);
-        
-            // Pass the relevant data to the admin view
-            return view('admin.index', compact('usersWithAttendance', 'adminAttendance', 'totalHoursPerWeek', 'totalHoursPerMonth'));
-        }
-        
 
-        // Fetch attendance records for the user
-        $attendances = DB::table('attendance')
-            ->where('user_id', $user->id)
-            ->orderBy('created_at', 'desc') // Optional: order by the most recent first
-            ->get();
+        // Fetch total expected hours dynamically (can be stored in config or DB)
+        $totalHoursPerWeek = config('attendance.hours_per_week', 36);  // Default to 36 hours
+        $totalHoursPerMonth = config('attendance.hours_per_month', 144); // Default to 144 hours
 
-        // Fetch weekend attendance records for the user
-        $weekendAttendances = DB::table('weekend')
-            ->where('user_id', $user->id)
-            ->orderBy('created_at', 'desc') // Optional: order by the most recent first
-            ->get();
-
-        // Calculate total hours for today
-        // Calculate total hours for today excluding leave
-        $today = Carbon::today();
-        $todayTotalHours = $attendances->filter(function ($attendance) use ($today) {
-        // Exclude attendance records where `is_leave` is true
-        return Carbon::parse($attendance->created_at)->isToday() && !$attendance->is_leave;
-        })->sum('total_hours');
-
-
-        // Calculate actual worked hours for the current week (without subtracting leave hours)
+        $startOfToday = Carbon::now()->startOfDay();
+        $endOfToday = Carbon::now()->endOfDay();
         $startOfWeek = Carbon::now()->startOfWeek();
         $endOfWeek = Carbon::now()->endOfWeek();
-        $weeklyTotalHours = $attendances->filter(function ($attendance) use ($startOfWeek, $endOfWeek) {
-            return Carbon::parse($attendance->created_at)->between($startOfWeek, $endOfWeek) && !$attendance->is_leave;
-        })->sum('total_hours');
-
-        // Get number of leave days this week, but don't subtract from worked hours
-        $leaveDaysThisWeek = DB::table('attendance')
-            ->where('user_id', $user->id)
-            ->where('is_leave', true)
-            ->whereBetween('clock_in', [$startOfWeek, $endOfWeek])
-            ->count();
-
-        // Calculate actual worked hours for the current month (without subtracting leave hours)
         $startOfMonth = Carbon::now()->startOfMonth();
         $endOfMonth = Carbon::now()->endOfMonth();
-        $monthlyTotalHours = $attendances->filter(function ($attendance) use ($startOfMonth, $endOfMonth) {
-            return Carbon::parse($attendance->created_at)->between($startOfMonth, $endOfMonth) && !$attendance->is_leave;
-        })->sum('total_hours');
 
-        // Get number of leave days this month
-        $leaveDaysThisMonth = DB::table('attendance')
-            ->where('user_id', $user->id)
-            ->where('is_leave', true)
-            ->whereBetween('clock_in', [$startOfMonth, $endOfMonth])
-            ->count();
+        // Admin-specific dashboard
+        if ($user->hasRole('admin')) {
+            // Fetch paginated users for better performance with large datasets
+            $allUsers = User::paginate(5); // Adjust the pagination limit as needed
 
-        // Define the total hours expected per week
-        $totalHoursPerWeek = 36;
+            // Get attendance and leave information for each user
+            $userAttendance = $this->fetchUserAttendance($startOfToday, $endOfToday, $startOfWeek, $endOfWeek, $startOfMonth, $endOfMonth);
+            $leaveDaysThisWeek = $this->fetchLeaveHours($startOfWeek, $endOfWeek);
+            $leaveDaysThisMonth = $this->fetchLeaveHours($startOfMonth, $endOfMonth);
 
-        // Calculate remaining hours left in the week, subtracting leave hours
-        $leftHoursPerWeek = $totalHoursPerWeek - $weeklyTotalHours - ($leaveDaysThisWeek * 8);
+            // Map and calculate remaining hours for each user
+            $usersWithAttendance = $allUsers->map(function ($user) use ($userAttendance, $leaveDaysThisWeek, $leaveDaysThisMonth, $totalHoursPerWeek, $totalHoursPerMonth) {
+                return $this->mapUserAttendance($user, $userAttendance, $leaveDaysThisWeek, $leaveDaysThisMonth, $totalHoursPerWeek, $totalHoursPerMonth);
+            });
 
-        // Define the total hours expected per month
-        $totalMonthlyHours = 144;
+            // Fetch the admin's attendance info
+            $adminAttendance = $usersWithAttendance->firstWhere('id', $user->id);
 
-        // Calculate remaining hours left in the month, subtracting leave hours
-        $leftHoursPerMonth = $totalMonthlyHours - $monthlyTotalHours - ($leaveDaysThisMonth * 8);
+            return view('admin.index', compact('usersWithAttendance', 'adminAttendance', 'totalHoursPerWeek', 'totalHoursPerMonth'));
+        }
 
-        // Pass the attendance records, today's total hours, weekly total hours,
-        // monthly total hours, left hours per week, and left hours per month to the view
+        // Non-admin user logic (regular user dashboard)
+        $attendances = $this->fetchUserAttendances($user->id);
+        $weekendAttendances = $this->fetchWeekendAttendances($user->id);
+
+        // Calculate hours for the user
+        $todayTotalHours = $this->calculateTotalHours($attendances, $startOfToday, $endOfToday);
+        $weeklyTotalHours = $this->calculateTotalHours($attendances, $startOfWeek, $endOfWeek);
+        $monthlyTotalHours = $this->calculateTotalHours($attendances, $startOfMonth, $endOfMonth);
+
+        // Calculate leave days and remaining hours
+        $leaveHoursThisWeek = $this->fetchLeaveHoursForUser($user->id, $startOfWeek, $endOfWeek);
+        $leaveHoursThisMonth = $this->fetchLeaveHoursForUser($user->id, $startOfMonth, $endOfMonth);
+
+        $leftHoursPerWeek = $totalHoursPerWeek - $weeklyTotalHours - $leaveHoursThisWeek;
+        $leftHoursPerMonth = $totalHoursPerMonth - $monthlyTotalHours - $leaveHoursThisMonth;
+/*dd($leaveHoursThisMonth,$leaveHoursThisWeek );*/
+
         return view('dashboard', [
             'attendances' => $attendances,
             'weekendAttendances' => $weekendAttendances,
             'todayTotalHours' => $todayTotalHours,
-            'weeklyTotalHours' => $weeklyTotalHours, // Worked hours without leaves
-            'monthlyTotalHours' => $monthlyTotalHours, // Worked hours without leaves
+            'weeklyTotalHours' => $weeklyTotalHours,
+            'monthlyTotalHours' => $monthlyTotalHours,
             'leftHoursPerWeek' => $leftHoursPerWeek,
             'leftHoursPerMonth' => $leftHoursPerMonth,
             'isClockedIn' => $attendances->whereNull('clock_out')->isNotEmpty(),
         ]);
     }
 
+    private function fetchUserAttendance($startOfToday, $endOfToday, $startOfWeek, $endOfWeek, $startOfMonth, $endOfMonth)
+    {
+        return Attendance::select('user_id')
+            ->selectRaw('SUM(CASE WHEN created_at BETWEEN ? AND ? THEN total_hours ELSE 0 END) as today_hours', [$startOfToday, $endOfToday])
+            ->selectRaw('SUM(CASE WHEN created_at BETWEEN ? AND ? THEN total_hours ELSE 0 END) as weekly_hours', [$startOfWeek, $endOfWeek])
+            ->selectRaw('SUM(CASE WHEN created_at BETWEEN ? AND ? THEN total_hours ELSE 0 END) as monthly_hours', [$startOfMonth, $endOfMonth])
+            ->groupBy('user_id')
+            ->get();
+    }
+
+    private function fetchLeaveHours($start, $end)
+    {
+        return Attendance::select('user_id', DB::raw('SUM(total_hours) as leave_hours'))
+            ->where('is_leave', true)
+            ->whereBetween('clock_in', [$start, $end])
+            ->groupBy('user_id')
+            ->get();
+    }
+
+    private function mapUserAttendance($user, $userAttendance, $leaveDaysThisWeek, $leaveDaysThisMonth, $totalHoursPerWeek, $totalHoursPerMonth)
+    {
+        $attendance = $userAttendance->firstWhere('user_id', $user->id);
+        $user->today_hours = $attendance ? $attendance->today_hours : 0;
+        $user->weekly_hours = $attendance ? $attendance->weekly_hours : 0;
+        $user->monthly_hours = $attendance ? $attendance->monthly_hours : 0;
+
+        // Fetch leave hours (instead of leave days)
+        $weeklyLeaveHours = $leaveDaysThisWeek->firstWhere('user_id', $user->id)->leave_hours ?? 0;
+        $monthlyLeaveHours = $leaveDaysThisMonth->firstWhere('user_id', $user->id)->leave_hours ?? 0;
+
+        // Subtract leave hours
+        $user->remaining_weekly_hours = $totalHoursPerWeek - $user->weekly_hours - $weeklyLeaveHours;
+        $user->remaining_monthly_hours = $totalHoursPerMonth - $user->monthly_hours - $monthlyLeaveHours;
+
+        return $user;
+    }
+
+    private function fetchUserAttendances($userId)
+    {
+        return Attendance::where('user_id', $userId)
+            ->orderBy('created_at', 'desc')
+            ->get();
+    }
+
+    private function fetchWeekendAttendances($userId)
+    {
+        return DB::table('weekend')
+            ->where('user_id', $userId)
+            ->orderBy('created_at', 'desc')
+            ->get();
+    }
+
+    private function calculateTotalHours($attendances, $start, $end)
+    {
+        return $attendances->filter(function ($attendance) use ($start, $end) {
+            return Carbon::parse($attendance->created_at)->between($start, $end) && !$attendance->is_leave;
+        })->sum('total_hours');
+    }
+
+    private function fetchLeaveHoursForUser($userId, $start, $end)
+    {
+        return Attendance::where('user_id', $userId)
+            ->where('is_leave', true)
+            ->whereBetween('clock_in', [$start, $end])
+            ->sum('total_hours'); // Fetch actual leave hours
+    }
+
     public function admin_index()
     {
         $user = Auth::user();
         if ($user->hasRole('admin')) {
-            // Fetch all users
-            $allUsers = User::all();
-            // Get the start and end of the current week, month, and today
+            // Fetch paginated users for better performance with large datasets
+            $allUsers = User::paginate(10); // Adjust the pagination limit as needed
+
+            $startOfToday = Carbon::now()->startOfDay();
+            $endOfToday = Carbon::now()->endOfDay();
             $startOfWeek = Carbon::now()->startOfWeek();
             $endOfWeek = Carbon::now()->endOfWeek();
             $startOfMonth = Carbon::now()->startOfMonth();
             $endOfMonth = Carbon::now()->endOfMonth();
-            $startOfToday = Carbon::now()->startOfDay();
-            $endOfToday = Carbon::now()->endOfDay();
-            // Fetch total weekly, monthly, and today attendance hours for each user
-            $userAttendance = Attendance::query()
-                ->select('user_id',
-                    DB::raw('SUM(CASE WHEN created_at BETWEEN "' . $startOfToday . '" AND "' . $endOfToday . '" THEN total_hours ELSE 0 END) as today_hours'),
-                    DB::raw('SUM(CASE WHEN created_at BETWEEN "' . $startOfWeek . '" AND "' . $endOfWeek . '" THEN total_hours ELSE 0 END) as weekly_hours'),
-                    DB::raw('SUM(CASE WHEN created_at BETWEEN "' . $startOfMonth . '" AND "' . $endOfMonth . '" THEN total_hours ELSE 0 END) as monthly_hours')
-                )
-                ->groupBy('user_id')
-                ->get();
-            // Define total expected hours per week and month
-            $totalHoursPerWeek = 36;
-            $totalHoursPerMonth = 144;
-            // Map attendance data to user data
-            $usersWithAttendance = $allUsers->map(function($user) use ($userAttendance, $totalHoursPerWeek, $totalHoursPerMonth) {
+
+            // Fetch attendance and leave hours for each user
+            $userAttendance = $this->fetchUserAttendance($startOfToday, $endOfToday, $startOfWeek, $endOfWeek, $startOfMonth, $endOfMonth);
+            $userLeaveHours = $this->fetchLeaveHours($startOfWeek, $endOfWeek);
+
+            $totalHoursPerWeek = config('attendance.hours_per_week', 36); // Dynamic or default value
+            $totalHoursPerMonth = config('attendance.hours_per_month', 144);
+
+            // Map attendance and leave data to user data
+            $usersWithAttendance = $allUsers->map(function ($user) use ($userAttendance, $userLeaveHours, $totalHoursPerWeek, $totalHoursPerMonth) {
                 $attendance = $userAttendance->firstWhere('user_id', $user->id);
+                $leaveHours = $userLeaveHours->firstWhere('user_id', $user->id);
+
                 $user->today_hours = $attendance ? $attendance->today_hours : 0;
-                $user->weekly_hours = $attendance ? $attendance->weekly_hours : 0;
-                $user->monthly_hours = $attendance ? $attendance->monthly_hours : 0;
+                $user->weekly_hours = ($attendance ? $attendance->weekly_hours : 0) + ($leaveHours ? $leaveHours->weekly_leave_hours : 0);
+                $user->monthly_hours = ($attendance ? $attendance->monthly_hours : 0) + ($leaveHours ? $leaveHours->monthly_leave_hours : 0);
                 $user->remaining_weekly_hours = $totalHoursPerWeek - $user->weekly_hours;
                 $user->remaining_monthly_hours = $totalHoursPerMonth - $user->monthly_hours;
+
                 return $user;
             });
-            // Fetch admin-specific attendance data
-            $adminAttendance = $usersWithAttendance->firstWhere('id', $user->id);
-            // Pass the relevant data to the admin view
-            return view('admin.index', compact('usersWithAttendance', 'adminAttendance', 'totalHoursPerWeek', 'totalHoursPerMonth'));
+
+            return view('admin.index', compact('usersWithAttendance', 'totalHoursPerWeek', 'totalHoursPerMonth'));
         }
-        // If not admin, redirect or show a different view (as needed)
-        return redirect()->route('dashboard');
     }
 }

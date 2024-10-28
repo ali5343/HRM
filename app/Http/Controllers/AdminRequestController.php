@@ -89,9 +89,6 @@ class AdminRequestController extends Controller
                     $attendance->total_hours = $hoursWorked - 8; // Deduct 8 hours for a day of leave
                     $attendance->save();
                     
-                     
-                     
-                     
                     break;
             }
 

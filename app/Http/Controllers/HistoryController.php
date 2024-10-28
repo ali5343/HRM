@@ -19,12 +19,13 @@ class HistoryController extends Controller
         return view('admin.history', ['requests' => $requests]);
     }
     public function userview() {
-        if (!auth()->user()->hasRole('user')) {
+        $user = auth()->user();
+        if (!$user || !$user->hasRole('user')) {
             abort(403); // Access denied
         }
     
         // Fetch approved, rejected, or pending requests for the authenticated user
-        $requests = Request::where('user_id', auth()->id())
+        $requests = Request::where('user_id', $user->id)
                             ->whereIn('status', ['approved', 'rejected', 'pending'])
                             ->get();
     

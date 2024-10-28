@@ -16,10 +16,13 @@
                 <select id="userDropdown" class="block w-full p-3 border border-gray-300 rounded-md text-gray-700 focus:ring-2 focus:ring-indigo-500 transition">
                     <option value="">-- Select a user --</option>
                     @foreach ($usersWithAttendance as $user)
+                    @php
+                        $deductedhours = 36 - ($user->leave_days * 8);
+                    @endphp
                         <option value="{{ $user->id }}"
-                                data-weekly-hours="{{ $user->weekly_hours }}"
+                                data-weekly-worked-hours="{{ $user->weekly_hours }}"
                                 data-monthly-hours="{{ $user->monthly_hours }}"
-                                data-remaining-weekly-hours="{{ $user->remaining_weekly_hours }}"
+                                data-deductedhours="{{ $deductedhours }}"
                                 data-remaining-monthly-hours="{{ $user->remaining_monthly_hours }}">
                             {{ $user->name }}
                         </option>
@@ -30,8 +33,8 @@
             <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
                 <h2 class="text-xl font-semibold text-gray-700 mb-2">User Hours</h2>
                 <div class="mt-4">
-                    <p class="text-lg"><strong>Weekly Hours:</strong> <span id="userWeeklyHours" class="text-indigo-600 font-medium">--</span> / {{ $user->remaining_weekly_hours }}</p>
-                    <p class="text-lg mt-2"><strong>Remaining Weekly Hours:</strong> <span id="userRemainingWeeklyHours" class="text-indigo-600 font-medium">--</span></p>
+                    <p class="text-lg"><strong>Weekly Hours:</strong> <span id="userWeeklyWorkedHours" class="text-indigo-600 font-medium">--</span>{{ $user->remaining_weekly_hours }} </p>
+                    <p class="text-lg mt-2"><strong>Remaining Weekly Hours:</strong> <span id="deductedhours" class="text-indigo-600 font-medium">--</span></p>
                 </div>
                 <div class="mt-4">
                     <p class="text-lg"><strong>Monthly Hours:</strong> <span id="userMonthlyHours" class="text-indigo-600 font-medium">--</span> / {{$user->remaining_monthly_hours}}</p>
@@ -174,11 +177,12 @@
     <script>
     document.getElementById('userDropdown').addEventListener('change', function() {
         const selectedOption = this.options[this.selectedIndex];
-        const weeklyHours = parseFloat(selectedOption.getAttribute('data-weekly-hours'));
+        const weeklyHours = parseFloat(selectedOption.getAttribute('data-weekly-worked-hours'));
+        const deductedhours = selectedOption.getAttribute('data-deductedhours');
         const remainingWeeklyHours = parseFloat(selectedOption.getAttribute('data-remaining-weekly-hours'));
         const monthlyHours = parseFloat(selectedOption.getAttribute('data-monthly-hours'));
         const remainingMonthlyHours = parseFloat(selectedOption.getAttribute('data-remaining-monthly-hours'));
-        
+
 
         // Convert hours to hours and minutes format
         const formatHoursMinutes = (totalHours) => {
@@ -187,7 +191,9 @@
             return `${hours} hours ${minutes} minutes`;
         };
 
-        document.getElementById('userWeeklyHours').textContent = weeklyHours ? formatHoursMinutes(weeklyHours) : '--';
+        document.getElementById('userWeeklyWorkedHours').textContent = weeklyWorkedHours ? weeklyWorkedHours + ' hours' : '--';
+        document.getElementById('deductedhours').textContent = deductedhours ? deductedhours + ' hours' : '--';
+
         document.getElementById('userRemainingWeeklyHours').textContent = remainingWeeklyHours ? formatHoursMinutes(remainingWeeklyHours) : '--';
         document.getElementById('userMonthlyHours').textContent = monthlyHours ? formatHoursMinutes(monthlyHours) : '--';
         document.getElementById('userRemainingMonthlyHours').textContent = remainingMonthlyHours ? formatHoursMinutes(remainingMonthlyHours) : '--';
