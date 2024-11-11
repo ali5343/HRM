@@ -13,13 +13,14 @@ return new class extends Migration
     {
         Schema::create('leaves', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('employee_id')->constrained()->onDelete('cascade');
-            $table->date('start_date');
-            $table->date('end_date');
-            $table->enum('leave_type', ['casual', 'sick', 'earned']);
-            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->timestamp('start_date'); // Check that this column exists
+            $table->timestamp('end_date');   // Check that this column exists
+
+            $table->string('status')->default('pending');
             $table->timestamps();
         });
+
     }
 
     /**

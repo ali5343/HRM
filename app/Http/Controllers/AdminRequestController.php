@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Attendance;
+use App\Models\Leaves;
 use App\Models\Request as UserRequest;
 use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Support\Carbon;
-use App\Notifications\RequestAccepted; // Import the notification class
+use App\Notifications\RequestAccepted;
+
+// Import the notification class
 use App\Models\User;
 use App\Notifications\RequestRejected;
 
@@ -19,11 +22,12 @@ class AdminRequestController extends Controller
         }
 
         // Fetch pending requests
-        $requests = UserRequest::where('status', 'pending' )->get();
-        
+        $requests = UserRequest::where('status', 'pending')->get();
+
         // Pass the requests to the view
         return view('admin.dashboard', compact('requests'));
     }
+
     public function view()
     {
         if (!auth()->user()->hasRole('admin')) {
@@ -32,7 +36,7 @@ class AdminRequestController extends Controller
 
         // Fetch pending requests
         $requests = UserRequest::where('status', 'pending')->get();
-        
+
         // Pass the requests to the view
         return view('admin.index', compact('requests'));
     }
@@ -71,25 +75,48 @@ class AdminRequestController extends Controller
 
                     break;
 
+
+
                 case 'leave':
-                    // deduct leave hours from the user's leave balance
-                    $attendance = Attendance::create([
+                    // Parse `start_time` and `end_time` into proper date or datetime format
+                    $startDate = Carbon::parse($requestEntry->start_time); // Converts to a Carbon instance
+                    $endDate = Carbon::parse($requestEntry->end_time);     // Converts to a Carbon instance
+
+
+                    $leave = new Leaves();
+                    $leave->user_id = $requestEntry->user_id;
+                    $leave->start_date = $startDate->toDateString();
+                    $leave->end_date = $endDate->toDateString();
+
+                    $leave->status = 'approved';
+                    $leave->save();
+
+                    // Create the leave record directly in the `leaves` table
+                    /*$leave = Leaves::create([
                         'user_id' => $requestEntry->user_id,
-                        'clock_in' => $requestEntry->start_time,
-                        'clock_out' => $requestEntry->end_time,
-                        'total_hours' => $requestEntry->total_hours,
-                        'is_leave' => true,
+                        'start_date' => $requestEntry->start_time, // Save as date string (e.g., '2024-11-12')
+                        'end_date' => $requestEntry->end_time,     // Save as date string
+                        'leave_type' => $requestEntry->leave_type,
+                        'status' => 'approved',                    // Approve the leave directly
+                    ]);*/
+
+                    // Step 2: Calculate leave hours if needed
+                    $leaveHours = $startDate->diffInHours($endDate);
+
+                    // Step 3: Add the leave entry to the `attendance` table
+                    Attendance::create([
+                        'user_id' => $leave->user_id,
+                        'clock_in' => $startDate->toDateTimeString(), // Save as full datetime
+                        'clock_out' => $endDate->toDateTimeString(),   // Save as full datetime
+                        'total_hours' => $leaveHours,
+                        'is_leave' => true,                            // Custom field to mark it as leave
                     ]);
 
-                    // Calculate the difference in hours between clock_in and clock_out
-                    $clockOut = Carbon::parse($attendance->clock_out);
-                    $clockIn = Carbon::parse($attendance->clock_in);
-                    $hoursWorked = $clockIn->diffInHours($clockOut);
-
-                    $attendance->total_hours = $hoursWorked - 8; // Deduct 8 hours for a day of leave
-                    $attendance->save();
-                    
                     break;
+
+
+
+
             }
 
             // Notify the user of approval

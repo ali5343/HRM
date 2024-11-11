@@ -28,11 +28,11 @@
             <div class="px-4 py-6 text-gray-800">
                 <h3 class="text-sm font-semibold tracking-wider">Today Total Hours</h3>
                 <p class="text-3xl font-bold">
-                    @if($todayTotalHours)
+                    @if($userData->today_hours)
                         @php
-                            $hours = floor($todayTotalHours);
-                            $minutes = floor(($todayTotalHours - $hours) * 60);
-                            $seconds = floor((($todayTotalHours - $hours) * 60 - $minutes) * 60);
+                            $hours = floor($userData->today_hours);
+                            $minutes = floor(($userData->today_hours - $hours) * 60);
+                            $seconds = floor((($userData->today_hours - $hours) * 60 - $minutes) * 60);
                         @endphp
                         {{ sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds) }}
                     @else
@@ -56,11 +56,11 @@
             <div class="px-4 py-6 text-gray-800">
                 <h3 class="text-sm font-semibold tracking-wider">This Week Total Hours: </h3>
                 <p class="text-3xl font-bold">
-                    @if($weeklyTotalHours)
+                    @if($userData->weekly_hours)
                         @php
-                            $hours = floor($weeklyTotalHours);
-                            $minutes = floor(($weeklyTotalHours - $hours) * 60);
-                            $seconds = floor((($weeklyTotalHours - $hours) * 60 - $minutes) * 60);
+                            $hours = floor($userData->weekly_hours);
+                            $minutes = floor(($userData->weekly_hours - $hours) * 60);
+                            $seconds = floor((($userData->weekly_hours - $hours) * 60 - $minutes) * 60);
                         @endphp
                         {{ sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds) }}
                     @else
@@ -84,11 +84,11 @@
             <div class="px-4 py-6 text-gray-800">
                 <h3 class="text-sm font-semibold tracking-wider">This Month Total Hours </h3>
                 <p class="text-3xl font-bold">
-                    @if($monthlyTotalHours)
+                    @if($userData->monthly_hours)
                         @php
-                            $hours = floor($monthlyTotalHours);
-                            $minutes = floor(($monthlyTotalHours - $hours) * 60);
-                            $seconds = floor((($monthlyTotalHours - $hours) * 60 - $minutes) * 60);
+                            $hours = floor($userData->monthly_hours);
+                            $minutes = floor(($userData->monthly_hours - $hours) * 60);
+                            $seconds = floor((($userData->monthly_hours - $hours) * 60 - $minutes) * 60);
                         @endphp
                         {{ sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds) }}
                     @else
@@ -114,11 +114,11 @@
                     @php
 
                         // Ensure $leftHoursPerWeek is non-negative
-                        $leftHoursPerWeek = max($leftHoursPerWeek, 0);
+                        $userData->remaining_weekly_hours = max($userData->remaining_weekly_hours, 0);
 
                         // Convert the decimal to hours and minutes
-                        $hours = floor($leftHoursPerWeek); // Get whole hours
-                        $minutes = floor(($leftHoursPerWeek - $hours) * 60); // Get remaining minutes
+                        $hours = floor($userData->remaining_weekly_hours); // Get whole hours
+                        $minutes = floor(($userData->remaining_weekly_hours - $hours) * 60); // Get remaining minutes
                     @endphp
 
                     {{ sprintf('%02d:%02d', $hours, $minutes) }} Hours
@@ -142,11 +142,11 @@
                 <p class="text-3xl font-bold">
                     @php
                         // Calculate left hours for the month
-                        $leftHoursPerMonth = max($leftHoursPerMonth, 0);
+                        $userData->remaining_monthly_hours = max($userData->remaining_monthly_hours, 0);
 
                         // Convert the decimal to hours and minutes
-                        $hours = floor($leftHoursPerMonth); // Get whole hours
-                        $minutes = floor(($leftHoursPerMonth - $hours) * 60); // Get remaining minutes
+                        $hours = floor($userData->remaining_monthly_hours); // Get whole hours
+                        $minutes = floor(($userData->remaining_monthly_hours - $hours) * 60); // Get remaining minutes
                     @endphp
                     {{ sprintf('%02d:%02d', $hours, $minutes) }} Hours
                 </p>
@@ -166,8 +166,8 @@
                 </svg>
                 <h3 class="ml-4 text-xl font-semibold text-white">Attendance Records</h3>
             </div>
-            <div class="p-4">
-                @if ($attendances->isEmpty())
+            {{--<div class="p-4">
+                @if ($user->isEmpty())
                     <p class="text-gray-600">No attendance records found.</p>
                 @else
                     <div class="overflow-x-auto">
@@ -212,11 +212,11 @@
                         </table>
                     </div>
                 @endif
-            </div>
+            </div>--}}
         </div>
 
         <!-- Weekend Attendance Records -->
-        <div class="flex flex-col bg-white border rounded-lg shadow-md overflow-hidden mt-4 md:mt-0">
+        {{--<div class="flex flex-col bg-white border rounded-lg shadow-md overflow-hidden mt-4 md:mt-0">
             <div class="flex items-center p-4 bg-blue-500">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-white" fill="none" viewBox="0 0 24 24"
                      stroke="currentColor">
@@ -271,7 +271,7 @@
                     </div>
                 @endif
             </div>
-        </div>
+        </div>--}}
     </div>
 
 
