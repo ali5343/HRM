@@ -28,7 +28,7 @@
             <div class="px-4 py-6 text-gray-800">
                 <h3 class="text-sm font-semibold tracking-wider">Today Total Hours</h3>
                 <p class="text-3xl font-bold">
-                    @if($userData->today_hours)
+                    @if(!is_null($userData) && $userData->today_hours)
                         @php
                             $hours = floor($userData->today_hours);
                             $minutes = floor(($userData->today_hours - $hours) * 60);
@@ -39,6 +39,7 @@
                         N/A
                     @endif
                 </p>
+
             </div>
         </div>
 
@@ -56,7 +57,7 @@
             <div class="px-4 py-6 text-gray-800">
                 <h3 class="text-sm font-semibold tracking-wider">This Week Total Hours: </h3>
                 <p class="text-3xl font-bold">
-                    @if($userData->weekly_hours)
+                    @if(!is_null($userData) && $userData->weekly_hours)
                         @php
                             $hours = floor($userData->weekly_hours);
                             $minutes = floor(($userData->weekly_hours - $hours) * 60);
@@ -84,7 +85,7 @@
             <div class="px-4 py-6 text-gray-800">
                 <h3 class="text-sm font-semibold tracking-wider">This Month Total Hours </h3>
                 <p class="text-3xl font-bold">
-                    @if($userData->monthly_hours)
+                    @if(!is_null($userData) && $userData->monthly_hours)
                         @php
                             $hours = floor($userData->monthly_hours);
                             $minutes = floor(($userData->monthly_hours - $hours) * 60);
@@ -155,7 +156,7 @@
     </div>
 
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 px-4 mt-8 sm:px-8">
+    {{--<div class="grid grid-cols-1 md:grid-cols-2 gap-4 px-4 mt-8 sm:px-8">
         <!-- Attendance Records -->
         <div class="flex flex-col bg-white border rounded-lg shadow-md overflow-hidden">
             <div class="flex items-center p-4 bg-green-500">
@@ -166,8 +167,8 @@
                 </svg>
                 <h3 class="ml-4 text-xl font-semibold text-white">Attendance Records</h3>
             </div>
-            {{--<div class="p-4">
-                @if ($user->isEmpty())
+            <div class="p-4">
+                @if ($userData->isEmpty())
                     <p class="text-gray-600">No attendance records found.</p>
                 @else
                     <div class="overflow-x-auto">
@@ -195,11 +196,11 @@
                                         {{ $attendance->clock_out ? \Carbon\Carbon::parse($attendance->clock_out)->format('h:i:s A') : 'N/A' }}
                                     </td>
                                     <td class="py-2 px-4 whitespace-nowrap text-gray-700">
-                                        @if($attendance->total_hours)
+                                        @if($attendance->today_hours)
                                             @php
-                                                $hours = floor($attendance->total_hours);
-                                                $minutes = floor(($attendance->total_hours - $hours) * 60);
-                                                $seconds = floor((($attendance->total_hours - $hours) * 60 - $minutes) * 60);
+                                                $hours = floor($attendance->today_hours);
+                                                $minutes = floor(($attendance->today_hours - $hours) * 60);
+                                                $seconds = floor((($attendance->today_hours - $hours) * 60 - $minutes) * 60);
                                             @endphp
                                             {{ sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds) }}
                                         @else
@@ -212,11 +213,11 @@
                         </table>
                     </div>
                 @endif
-            </div>--}}
+            </div>
         </div>
 
         <!-- Weekend Attendance Records -->
-        {{--<div class="flex flex-col bg-white border rounded-lg shadow-md overflow-hidden mt-4 md:mt-0">
+        --}}{{--<div class="flex flex-col bg-white border rounded-lg shadow-md overflow-hidden mt-4 md:mt-0">
             <div class="flex items-center p-4 bg-blue-500">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-white" fill="none" viewBox="0 0 24 24"
                      stroke="currentColor">
@@ -271,8 +272,8 @@
                     </div>
                 @endif
             </div>
-        </div>--}}
-    </div>
+        </div>--}}{{--
+    </div>--}}
 
 
 </x-layout>
