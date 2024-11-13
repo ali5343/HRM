@@ -54,11 +54,13 @@ class DashboardController extends Controller
         $userData->weekly_hours = $user->attendances()
             ->whereBetween('clock_in', [$startOfWeek, Carbon::now()->endOfWeek()])
             ->whereNotNull('clock_out')
+            ->where('is_leave', 0)
             ->sum('total_hours');
 
         $userData->monthly_hours = $user->attendances()
             ->whereBetween('clock_in', [$startOfMonth, Carbon::now()->endOfMonth()])
             ->whereNotNull('clock_out')
+            ->where('is_leave', 0)
             ->sum('total_hours');
 
         // Calculate leave hours for the current week and month

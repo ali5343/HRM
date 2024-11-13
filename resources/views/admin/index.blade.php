@@ -153,6 +153,31 @@
                     </p>
                 </div>
             </div>
+
+            <!-- Remaining Monthly Hours Card -->
+            <div class="flex items-center bg-white border rounded-lg overflow-hidden shadow-lg transition-transform transform hover:scale-105">
+                <div class="p-4 bg-red-500 rounded-l-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                    </svg>
+                </div>
+                <div class="px-4 py-6 text-gray-800">
+                    <h3 class="text-sm font-semibold tracking-wider">Remaining Monthly Hours</h3>
+                    <p class="text-3xl font-bold">
+                        @if($adminAttendance->remaining_monthly_hours)
+                            @php
+                                $hours = floor($adminAttendance->remaining_monthly_hours);
+                                $minutes = floor(($adminAttendance->remaining_monthly_hours - $hours) * 60);
+                                $seconds = floor((($adminAttendance->remaining_monthly_hours - $hours) * 60 - $minutes) * 60);
+                            @endphp
+                            {{ sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds) }}
+                        @else
+                            N/A
+                        @endif
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
 
